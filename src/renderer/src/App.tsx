@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
-import type { Configuration } from '../../main/domain/ports/dtos/Configuration'
+import type { Configuration } from '@domain/ports/dtos/Configuration'
 
 const ipcRenderer = window.electron.ipcRenderer
 

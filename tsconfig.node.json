@@ -9,6 +9,7 @@
     "paths": {
       "@/*": ["src/renderer/src/*"],
       "@domain/*": ["src/main/domain/*"],
+      "@adapters/*": ["src/main/adapters/*"],
       "@renderer/*": [
         "src/renderer/src/*"
       ]
