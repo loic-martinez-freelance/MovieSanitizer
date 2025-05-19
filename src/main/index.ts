@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { app, shell, BrowserWindow, screen } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
@@ -18,7 +19,6 @@ import { SelectLibraryFolderUseCase } from './domain/useCases/settings/selectLib
 
 function initializeApp() {
   const configurationAdapter = new ElectronConfigurationAdapter()
-
   const fileSystemAdapter = new FSAdapter()
   const metadataAdapter = new NFOAdapter()
   const movieDBAdapter = new TMDBAdapter(process.env.DB_TOKEN ?? '')

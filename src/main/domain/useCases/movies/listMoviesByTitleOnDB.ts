@@ -1,4 +1,4 @@
-import { MovieDBAdapterPort } from '@/domain/ports/MovieDBAdapterPort'
+import { MovieDBAdapterPort } from '@domain/ports/MovieDBAdapterPort'
 
 export class ListMoviesByTitleOnDB {
   constructor(private readonly movieDBAdapter: MovieDBAdapterPort) {}

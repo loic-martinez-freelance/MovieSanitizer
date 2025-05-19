@@ -1,5 +1,5 @@
-import { ConfigurationPort } from '@/domain/ports/ConfigurationPort'
-import { FileSystemPort } from '@/domain/ports/FileSystemPort'
+import { ConfigurationPort } from '@domain/ports/ConfigurationPort'
+import { FileSystemPort } from '@domain/ports/FileSystemPort'
 
 export class ListNewMoviesUseCase {
   constructor(

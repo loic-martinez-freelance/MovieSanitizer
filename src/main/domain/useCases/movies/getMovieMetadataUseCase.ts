@@ -1,7 +1,7 @@
-import { ConfigurationPort } from '@/domain/ports/ConfigurationPort'
-import { MovieFullMetadata } from '@/domain/ports/dtos/Movie'
-import { FileSystemPort } from '@/domain/ports/FileSystemPort'
-import { MetadataAdapterPort } from '@/domain/ports/MetadataAdapterPort'
+import { ConfigurationPort } from '@domain/ports/ConfigurationPort'
+import { MovieFullMetadata } from '@domain/ports/dtos/Movie'
+import { FileSystemPort } from '@domain/ports/FileSystemPort'
+import { MetadataAdapterPort } from '@domain/ports/MetadataAdapterPort'
 import path from 'path'
 
 export class GetMovieMetadataUseCase {

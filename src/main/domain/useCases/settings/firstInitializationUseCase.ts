@@ -1,4 +1,4 @@
-import { ConfigurationPort } from '@/domain/ports/ConfigurationPort'
+import { ConfigurationPort } from '@domain/ports/ConfigurationPort'
 import { InitializeNewLibraryUseCase } from '../movies/initializeNewLibrary'
 
 export class FirstInitializationUseCase {

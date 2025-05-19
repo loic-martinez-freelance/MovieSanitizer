@@ -1,8 +1,8 @@
 import { ipcMain } from 'electron'
-import { ComAdapterPort } from '@/domain/ports/ComAdapterPort'
-import { SaveConfigurationUseCase } from '@/domain/useCases/settings/saveConfigurationUseCase'
-import { GetConfigurationUseCase } from '@/domain/useCases/settings/getConfigurationUseCase'
-import { SelectLibraryFolderUseCase } from '@/domain/useCases/settings/selectLibraryFolderUseCase'
+import { ComAdapterPort } from '@domain/ports/ComAdapterPort'
+import { SaveConfigurationUseCase } from '@domain/useCases/settings/saveConfigurationUseCase'
+import { GetConfigurationUseCase } from '@domain/useCases/settings/getConfigurationUseCase'
+import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/selectLibraryFolderUseCase'
 export class IPCRouterAdapter implements ComAdapterPort {
   constructor() {}
 

@@ -1,6 +1,6 @@
-import { Movie } from '@/domain/ports/dtos/Movie'
+import { Movie } from '@domain/ports/dtos/Movie'
 import { ListNewMoviesUseCase } from './listNewMovies'
-import { ConfigurationPort } from '@/domain/ports/ConfigurationPort'
+import { ConfigurationPort } from '@domain/ports/ConfigurationPort'
 import { GetMovieMetadataUseCase } from './getMovieMetadataUseCase'
 import path from 'path'
 export class InitializeNewLibraryUseCase {
