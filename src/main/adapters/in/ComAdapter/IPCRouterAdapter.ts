@@ -9,13 +9,13 @@ export class IPCRouterAdapter implements ComAdapterPort {
   constructor() {}
 
   startPingRouter() {
-    ipcMain.on('ping', (event, arg) => {
+    ipcMain.on('ping', (_, arg) => {
       console.log(arg)
     })
   }
 
   startSaveConfiguration(saveConfigurationUseCase: SaveConfigurationUseCase) {
-    ipcMain.on('saveConfiguration', (event, arg) => {
+    ipcMain.on('saveConfiguration', (_, arg) => {
       saveConfigurationUseCase.execute(arg)
     })
   }
@@ -37,22 +37,16 @@ export class IPCRouterAdapter implements ComAdapterPort {
   }
 
   startGetMovieMetadata(getMovieMetadataUseCase: GetMovieMetadataUseCase) {
-    ipcMain.handle(
-      'getMovieMetadata',
-      async (event, movieRelativePath: string) => {
-        const movie = getMovieMetadataUseCase.execute(movieRelativePath)
-        return movie
-      }
-    )
+    ipcMain.handle('getMovieMetadata', async (_, movieRelativePath: string) => {
+      const movie = getMovieMetadataUseCase.execute(movieRelativePath)
+      return movie
+    })
   }
 
   startGetMovieImage(getMovieImageUseCase: GetMovieImageUseCase) {
-    ipcMain.handle(
-      'getMovieImage',
-      async (event, movieRelativePath: string) => {
-        const image = getMovieImageUseCase.execute(movieRelativePath)
-        return image
-      }
-    )
+    ipcMain.handle('getMovieImage', async (_, movieRelativePath: string) => {
+      const image = getMovieImageUseCase.execute(movieRelativePath)
+      return image
+    })
   }
 }
