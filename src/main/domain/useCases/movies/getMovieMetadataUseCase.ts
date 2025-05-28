@@ -29,8 +29,9 @@ export class GetMovieMetadataUseCase {
       return undefined
     }
     const relatedMetadataContent =
-      this.fileSystemAdapter.getFileContent(relatedMetadataPath)
+      this.fileSystemAdapter.getFileContentAsString(relatedMetadataPath)
     const metadata = this.metadataAdapter.parseContent(relatedMetadataContent)
+
     return metadata
   }
 }

@@ -15,8 +15,13 @@ export class FSAdapter implements FileSystemPort {
     }
   }
 
-  getFileContent(filePath: string): string {
+  getFileContentAsString(filePath: string): string {
     return readFileSync(filePath, 'utf8')
+  }
+
+  getFileContentAsBuffer(filePath: string): Buffer {
+    const file = readFileSync(filePath)
+    return file
   }
 
   checkFileExists(filePath: string): boolean {

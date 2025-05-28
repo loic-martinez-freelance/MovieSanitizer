@@ -1,5 +1,6 @@
 export interface FileSystemPort {
   listFiles(path: string): string[]
-  getFileContent(filePath: string): string
+  getFileContentAsString(filePath: string): string
+  getFileContentAsBuffer(filePath: string): Buffer
   checkFileExists(filePath: string): boolean
 }

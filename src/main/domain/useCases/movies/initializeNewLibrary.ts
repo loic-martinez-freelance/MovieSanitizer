@@ -19,6 +19,5 @@ export class InitializeNewLibraryUseCase {
       return { relativePath: m, title }
     })
     this.configurationAdapter.saveConfiguration({ movies })
-    console.log(movies)
   }
 }

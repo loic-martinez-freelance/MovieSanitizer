@@ -16,6 +16,7 @@ import { FirstInitializationUseCase } from '@domain/useCases/settings/firstIniti
 import { GetConfigurationUseCase } from '@domain/useCases/settings/getConfigurationUseCase'
 import { SaveConfigurationUseCase } from '@domain/useCases/settings/saveConfigurationUseCase'
 import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/selectLibraryFolderUseCase'
+import { GetMovieImageUseCase } from '@domain/useCases/movies/getMovieImageUseCase'
 
 function initializeApp() {
   const configurationAdapter = new ElectronConfigurationAdapter()
@@ -23,9 +24,6 @@ function initializeApp() {
   const metadataAdapter = new NFOAdapter()
   const movieDBAdapter = new TMDBAdapter(process.env.DB_TOKEN ?? '')
 
-  const saveConfigurationUseCase = new SaveConfigurationUseCase(
-    configurationAdapter
-  )
   const getConfigurationUseCase = new GetConfigurationUseCase(
     configurationAdapter
   )
@@ -33,6 +31,10 @@ function initializeApp() {
     configurationAdapter,
     fileSystemAdapter,
     metadataAdapter
+  )
+  const getMovieImageUseCase = new GetMovieImageUseCase(
+    configurationAdapter,
+    fileSystemAdapter
   )
   const selectLibraryFolderUseCase = new SelectLibraryFolderUseCase()
   const listNewMoviesUseCase = new ListNewMoviesUseCase(
@@ -48,15 +50,21 @@ function initializeApp() {
     configurationAdapter,
     initializeNewLibraryUseCase
   )
-  firstInitializationUseCase.execute()
-
+  const saveConfigurationUseCase = new SaveConfigurationUseCase(
+    configurationAdapter,
+    initializeNewLibraryUseCase
+  )
   const listMoviesByTitleOnDBUseCase = new ListMoviesByTitleOnDB(movieDBAdapter)
+
+  firstInitializationUseCase.execute()
 
   const comAdapter = new IPCRouterAdapter()
   comAdapter.startPingRouter()
   comAdapter.startSaveConfiguration(saveConfigurationUseCase)
   comAdapter.startGetConfiguration(getConfigurationUseCase)
   comAdapter.startSelectLibraryFolder(selectLibraryFolderUseCase)
+  comAdapter.startGetMovieMetadata(getMovieMetadataUseCase)
+  comAdapter.startGetMovieImage(getMovieImageUseCase)
 }
 
 function createWindow(): void {
