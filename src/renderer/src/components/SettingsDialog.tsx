@@ -11,7 +11,9 @@ import {
 } from '@/components/ui/dialog'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
+import { useIPC } from '@/hooks/useIPC'
+import { useEffect, useState } from 'react'
+import type { Configuration } from '@domain/ports/dtos/Configuration'
 
 interface SettingsDialogProps {
   open: boolean
@@ -19,6 +21,33 @@ interface SettingsDialogProps {
 }
 
 export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
+  const ipc = useIPC()
+  const [configuration, setConfiguration] = useState<Configuration | null>(null)
+  const [libraryPath, setLibraryPath] = useState('')
+
+  useEffect(() => {
+    const loadConfiguration = async () => {
+      const config = await ipc.getConfiguration()
+      setConfiguration(config)
+      setLibraryPath(config.libraryPath)
+    }
+    if (open) {
+      loadConfiguration()
+    }
+  }, [open])
+
+  const handleSave = async () => {
+    if (configuration) {
+      await ipc.saveConfiguration({ ...configuration, libraryPath })
+      onOpenChange(false)
+    }
+  }
+
+  const handleSelectFolder = async () => {
+    const folder = await ipc.selectLibraryFolder()
+    setLibraryPath(folder)
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
@@ -51,10 +80,15 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                 <div className="flex gap-2">
                   <Input
                     id="movie-folder"
-                    defaultValue="/Users/john/Movies"
+                    value={libraryPath}
+                    onChange={(e) => setLibraryPath(e.target.value)}
                     className="bg-background border-input"
                   />
-                  <Button variant="outline" size="sm">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSelectFolder}
+                  >
                     <FolderOpen className="w-4 h-4 mr-2" />
                     Parcourir
                   </Button>
@@ -63,11 +97,6 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                   Dossier contenant votre collection de films
                 </p>
               </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox id="subfolders" defaultChecked />
-                <Label htmlFor="subfolders">Inclure les sous-dossiers</Label>
-              </div>
             </CardContent>
           </Card>
         </div>
@@ -75,7 +104,7 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Annuler
           </Button>
-          <Button onClick={() => onOpenChange(false)}>Enregistrer</Button>
+          <Button onClick={handleSave}>Enregistrer</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
