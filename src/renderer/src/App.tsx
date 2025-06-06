@@ -3,17 +3,16 @@ import { TopBar } from '@/components/TopBar'
 import { MovieList } from '@/components/MovieList'
 import { MovieDetails } from '@/components/MovieDetails'
 import { useIPC } from '@/hooks/useIPC'
-import type { Movie, MovieFullMetadata } from '@domain/ports/dtos/Movie'
+import { MovieWithMetadata, type Movie } from '@domain/ports/dtos/Movie'
 
 const App = () => {
   const { getConfiguration, getMovieMetadata, getMovieImage, loading, error } =
     useIPC()
   const [movies, setMovies] = useState<Movie[]>([])
-  const [selectedMovie, setSelectedMovie] = useState<string>('')
+  const [selectedMovie, setSelectedMovie] = useState<Movie>()
   const [searchQuery, setSearchQuery] = useState('')
-  const [movieDetails, setMovieDetails] = useState<
-    Record<string, MovieFullMetadata & { posterUrl?: string }>
-  >({})
+  const [selectedMovieWithDetails, setSelectedMovieWithDetails] =
+    useState<MovieWithMetadata>()
 
   useEffect(() => {
     const loadMovies = async () => {
@@ -21,8 +20,7 @@ const App = () => {
         const config = await getConfiguration()
         if (config.movies && config.movies.length > 0) {
           setMovies(config.movies)
-          // Select the first movie by default
-          setSelectedMovie(config.movies[0].relativePath)
+          setSelectedMovie(config.movies[0])
         }
       } catch (err) {
         console.error('Failed to load movies:', err)
@@ -36,22 +34,19 @@ const App = () => {
       if (!selectedMovie) return
 
       try {
-        const metadata = await getMovieMetadata(selectedMovie)
-        if (metadata) {
-          const posterUrl = await getMovieImage(selectedMovie)
-          setMovieDetails((prev) => ({
-            ...prev,
-            [selectedMovie]: { ...metadata, posterUrl },
-          }))
-        }
+        const metadata = await getMovieMetadata(selectedMovie.relativePath)
+        const posterUrl = await getMovieImage(selectedMovie.relativePath)
+        setSelectedMovieWithDetails({
+          relativePath: selectedMovie.relativePath,
+          title: selectedMovie.title,
+          metadata: metadata ? { ...metadata, thumb: posterUrl } : undefined,
+        })
       } catch (err) {
         console.error('Failed to load movie details:', err)
       }
     }
     loadMovieDetails()
   }, [selectedMovie, getMovieMetadata, getMovieImage])
-
-  const currentMovie = movieDetails[selectedMovie]
 
   if (loading) {
     return (
@@ -75,29 +70,13 @@ const App = () => {
       <div className="flex flex-1 overflow-hidden">
         <MovieList
           movies={movies}
-          selectedMovie={selectedMovie}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
           onMovieSelect={setSelectedMovie}
+          selectedMovie={selectedMovie}
         />
-        {currentMovie && (
-          <MovieDetails
-            title={currentMovie.title}
-            details={{
-              year: currentMovie.year || '',
-              genre: currentMovie.genres.join(', '),
-              duration: currentMovie.runtime
-                ? `${currentMovie.runtime} minutes`
-                : '',
-              filename: selectedMovie.split('/').pop() || '',
-              size: currentMovie.fileInfo?.streamDetails?.video
-                ?.durationInSeconds
-                ? `${Math.round(currentMovie.fileInfo.streamDetails.video.durationInSeconds / 60)} minutes`
-                : '',
-              description: currentMovie.plot || '',
-              poster: currentMovie.posterUrl || currentMovie.thumb || '🎬',
-            }}
-          />
+        {selectedMovieWithDetails && selectedMovieWithDetails.metadata && (
+          <MovieDetails movie={selectedMovieWithDetails} />
         )}
       </div>
     </div>

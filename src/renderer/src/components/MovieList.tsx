@@ -1,14 +1,14 @@
 import { Search } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
-import type { Movie as DomainMovie } from '@domain/ports/dtos/Movie'
+import type { Movie } from '@domain/ports/dtos/Movie'
 
 interface MovieListProps {
-  movies: DomainMovie[]
-  selectedMovie: string
+  movies: Movie[]
+  selectedMovie?: Movie
   searchQuery: string
   onSearchChange: (query: string) => void
-  onMovieSelect: (moviePath: string) => void
+  onMovieSelect: (movie: Movie) => void
 }
 
 export const MovieList = ({
@@ -28,7 +28,7 @@ export const MovieList = ({
         <div className="relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search movies..."
+            placeholder="Rechercher un film..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             className="pl-8"
@@ -40,11 +40,11 @@ export const MovieList = ({
           <Card
             key={movie.relativePath}
             className={`m-2 cursor-pointer transition-colors ${
-              selectedMovie === movie.relativePath
+              selectedMovie?.relativePath === movie.relativePath
                 ? 'bg-accent'
                 : 'hover:bg-accent/50'
             }`}
-            onClick={() => onMovieSelect(movie.relativePath)}
+            onClick={() => onMovieSelect(movie)}
           >
             <CardContent className="p-3">
               <div className="flex items-center gap-3">

@@ -1,7 +1,7 @@
 // src/renderer/src/hooks/useIPC.ts
 import { useState, useCallback } from 'react'
 import type { Configuration } from '@domain/ports/dtos/Configuration'
-import type { Movie, MovieFullMetadata } from '@domain/ports/dtos/Movie'
+import type { MovieFullMetadata } from '@domain/ports/dtos/Movie'
 
 export const useIPC = () => {
   const [error, setError] = useState<Error | null>(null)
