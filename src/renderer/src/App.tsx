@@ -4,6 +4,7 @@ import { MovieList } from '@/components/MovieList'
 import { MovieDetails } from '@/components/MovieDetails'
 import { useIPC } from '@/hooks/useIPC'
 import { MovieWithMetadata, type Movie } from '@domain/ports/dtos/Movie'
+import MovieScraper from './components/MovieScraper'
 
 const App = () => {
   const { getConfiguration, getMovieMetadata, getMovieImage, loading, error } =
@@ -75,8 +76,10 @@ const App = () => {
           onMovieSelect={setSelectedMovie}
           selectedMovie={selectedMovie}
         />
-        {selectedMovieWithDetails && selectedMovieWithDetails.metadata && (
+        {selectedMovieWithDetails && selectedMovieWithDetails.metadata ? (
           <MovieDetails movie={selectedMovieWithDetails} />
+        ) : (
+          selectedMovie && <MovieScraper movie={selectedMovie}></MovieScraper>
         )}
       </div>
     </div>

@@ -95,6 +95,27 @@ export const useIPC = () => {
     []
   )
 
+  const getRelatedMoviesFromDB = useCallback(
+    async (
+      title: string
+    ): Promise<{ id: string; title: string; year: string }[]> => {
+      try {
+        setLoading(true)
+        const movies = await window.electron.ipcRenderer.invoke(
+          'getRelatedMoviesFromDB',
+          title
+        )
+        return movies
+      } catch (err) {
+        setError(err as Error)
+        throw err
+      } finally {
+        setLoading(false)
+      }
+    },
+    []
+  )
+
   return {
     error,
     loading,
@@ -103,5 +124,6 @@ export const useIPC = () => {
     selectLibraryFolder,
     getMovieMetadata,
     getMovieImage,
+    getRelatedMoviesFromDB,
   }
 }
