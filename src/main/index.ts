@@ -65,6 +65,7 @@ function initializeApp() {
   comAdapter.startSelectLibraryFolder(selectLibraryFolderUseCase)
   comAdapter.startGetMovieMetadata(getMovieMetadataUseCase)
   comAdapter.startGetMovieImage(getMovieImageUseCase)
+  comAdapter.startGetRelatedMoviesFromDB(listMoviesByTitleOnDBUseCase)
 }
 
 function createWindow(): void {

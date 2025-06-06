@@ -5,6 +5,7 @@ import { GetConfigurationUseCase } from '@domain/useCases/settings/getConfigurat
 import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/selectLibraryFolderUseCase'
 import { GetMovieMetadataUseCase } from '@domain/useCases/movies/getMovieMetadataUseCase'
 import { GetMovieImageUseCase } from '@domain/useCases/movies/getMovieImageUseCase'
+import { ListMoviesByTitleOnDB } from '@domain/useCases/movies/listMoviesByTitleOnDB'
 export class IPCRouterAdapter implements ComAdapterPort {
   constructor() {}
 
@@ -47,6 +48,15 @@ export class IPCRouterAdapter implements ComAdapterPort {
     ipcMain.handle('getMovieImage', async (_, movieRelativePath: string) => {
       const image = getMovieImageUseCase.execute(movieRelativePath)
       return image
+    })
+  }
+
+  startGetRelatedMoviesFromDB(
+    listMoviesByTitleOnDBUseCase: ListMoviesByTitleOnDB
+  ) {
+    ipcMain.handle('getRelatedMoviesFromDB', async (_, title: string) => {
+      const movies = await listMoviesByTitleOnDBUseCase.execute(title)
+      return movies
     })
   }
 }
