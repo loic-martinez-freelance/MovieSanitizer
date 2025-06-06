@@ -51,11 +51,57 @@ export const useIPC = () => {
     }
   }
 
+  const getMovieMetadata = useCallback(
+    async (
+      movieRelativePath: string
+    ): Promise<MovieFullMetadata | undefined> => {
+      try {
+        setLoading(true)
+        const metadata = await window.electron.ipcRenderer.invoke(
+          'getMovieMetadata',
+          movieRelativePath
+        )
+        return metadata
+      } catch (err) {
+        setError(err as Error)
+        throw err
+      } finally {
+        setLoading(false)
+      }
+    },
+    []
+  )
+
+  const getMovieImage = useCallback(
+    async (movieRelativePath: string): Promise<string | undefined> => {
+      try {
+        setLoading(true)
+        const imageBuffer = await window.electron.ipcRenderer.invoke(
+          'getMovieImage',
+          movieRelativePath
+        )
+        if (imageBuffer) {
+          const blob = new Blob([imageBuffer], { type: 'image/jpeg' })
+          return URL.createObjectURL(blob)
+        }
+        return undefined
+      } catch (err) {
+        setError(err as Error)
+        throw err
+      } finally {
+        setLoading(false)
+      }
+    },
+    []
+  )
+
   return {
     error,
     loading,
     getConfiguration,
     saveConfiguration,
     selectLibraryFolder,
+    getMovieMetadata,
+    getMovieImage,
   }
 }
