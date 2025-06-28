@@ -5,7 +5,6 @@ export class ListMoviesByTitleOnDB {
 
   async execute(title: string) {
     const result = await this.movieDBAdapter.searchMovies(title)
-    console.log(result)
     return result
   }
 }
