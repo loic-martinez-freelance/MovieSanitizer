@@ -15,7 +15,17 @@ type SearchResult = {
 const MovieScraper = ({ movie }: { movie: Movie }) => {
   const [searchQuery, setSearchQuery] = useState(movie.title)
   const [relatedMovies, setRelatedMovies] = useState<SearchResult[]>([])
-  const { loading, error, getRelatedMoviesFromDB } = useIPC()
+  const { loading, error, getRelatedMoviesFromDB, cleanLocalMovie } = useIPC()
+
+  const handleSelectMovie = async (selectedMovieId: string) => {
+    try {
+      await cleanLocalMovie(movie.relativePath, selectedMovieId)
+      // You might want to add a callback here to notify the parent component
+      // that the movie has been updated
+    } catch (err) {
+      console.error('Error cleaning movie:', err)
+    }
+  }
 
   useEffect(() => {
     const searchMovies = async () => {
@@ -90,7 +100,12 @@ const MovieScraper = ({ movie }: { movie: Movie }) => {
                     </p>
                   )}
                 </div>
-                <Button>Choisir ce film</Button>
+                <Button
+                  onClick={() => handleSelectMovie(relatedMovie.id)}
+                  disabled={loading}
+                >
+                  {loading ? 'Mise à jour...' : 'Choisir ce film'}
+                </Button>
               </div>
             </CardContent>
           </Card>

@@ -110,4 +110,110 @@ export class NFOAdapter implements MetadataAdapterPort {
         : undefined,
     }
   }
+
+  toNFO(metadata: any): string {
+    // Helper to escape XML special characters
+    const escape = (str: string) =>
+      str
+        ? str.replace(
+            /[<>&'\"]/g,
+            (c) =>
+              ({
+                '<': '&lt;',
+                '>': '&gt;',
+                '&': '&amp;',
+                "'": '&apos;',
+                '"': '&quot;',
+              })[c] || c
+          )
+        : ''
+
+    // Helper to build array tags
+    const arrayTags = (tag: string, arr: any[], fn: (item: any) => string) =>
+      arr && arr.length
+        ? arr.map((item) => `  <${tag}>${fn(item)}</${tag}>`).join('\n')
+        : ''
+
+    // Actors
+    const actors =
+      metadata.actors && metadata.actors.length
+        ? metadata.actors
+            .map((a: any) => {
+              let body = `    <name>${escape(a.name)}</name>`
+              if (a.role) body += `\n    <role>${escape(a.role)}</role>`
+              if (a.thumb) body += `\n    <thumb>${escape(a.thumb)}</thumb>`
+              return `  <actor>\n${body}\n  </actor>`
+            })
+            .join('\n')
+        : ''
+
+    // Audio
+    const audio =
+      metadata.fileInfo?.streamDetails?.audio &&
+      metadata.fileInfo.streamDetails.audio.length
+        ? metadata.fileInfo.streamDetails.audio
+            .map(
+              (a: any) =>
+                `<codec>${escape(a.codec || '')}</codec><language>${escape(a.language || '')}</language><channels>${a.channels || ''}</channels>`
+            )
+            .map((body: string) => `<audio>${body}</audio>`) // no indent for nested
+            .join('')
+        : ''
+    // Subtitle
+    const subtitle =
+      metadata.fileInfo?.streamDetails?.subtitle &&
+      metadata.fileInfo.streamDetails.subtitle.length
+        ? metadata.fileInfo.streamDetails.subtitle
+            .map(
+              (s: any) =>
+                `<subtitle><language>${escape(s.language || '')}</language></subtitle>`
+            )
+            .join('')
+        : ''
+    // Video
+    const video = metadata.fileInfo?.streamDetails?.video
+      ? `<video><codec>${escape(metadata.fileInfo.streamDetails.video.codec || '')}</codec><aspect>${escape(metadata.fileInfo.streamDetails.video.aspect || '')}</aspect><width>${metadata.fileInfo.streamDetails.video.width || ''}</width><height>${metadata.fileInfo.streamDetails.video.height || ''}</height><durationinseconds>${metadata.fileInfo.streamDetails.video.durationInSeconds || ''}</durationinseconds><stereomode>${escape(metadata.fileInfo.streamDetails.video.stereoMode || '')}</stereomode></video>`
+      : ''
+    // Stream details
+    const streamDetails =
+      video || audio || subtitle
+        ? `<streamdetails>${video}${audio}${subtitle}</streamdetails>`
+        : ''
+    // Fileinfo
+    const fileInfo = streamDetails
+      ? `<fileinfo>${streamDetails}</fileinfo>`
+      : ''
+
+    return `<movie>
+  <title>${escape(metadata.title || '')}</title>
+  <sorttitle>${escape(metadata.sortTitle || '')}</sorttitle>
+  <originaltitle>${escape(metadata.originalTitle || '')}</originaltitle>
+  <year>${escape(metadata.year || '')}</year>
+  <rating>${metadata.rating ?? ''}</rating>
+  <votes>${metadata.votes ?? ''}</votes>
+  <top250>${metadata.top250 ?? ''}</top250>
+  <set>${escape(metadata.set || '')}</set>
+  <plot>${escape(metadata.plot || '')}</plot>
+  <outline>${escape(metadata.outline || '')}</outline>
+  <tagline>${escape(metadata.tagline || '')}</tagline>
+  <runtime>${escape(metadata.runtime || '')}</runtime>
+  <thumb>${escape(metadata.thumb || '')}</thumb>
+  <fanart>${escape(metadata.fanart || '')}</fanart>
+  <mpaa>${escape(metadata.mpaa || '')}</mpaa>
+  <certification>${escape(metadata.certification || '')}</certification>
+  <id>${escape(metadata.id || '')}</id>
+  <imdbid>${escape(metadata.imdbId || '')}</imdbid>
+  <tmdbid>${escape(metadata.tmdbId || '')}</tmdbid>
+  <trailer>${escape(metadata.trailer || '')}</trailer>
+  ${arrayTags('genre', metadata.genres || [], escape)}
+  ${arrayTags('tag', metadata.tags || [], escape)}
+  ${arrayTags('studio', metadata.studios || [], escape)}
+  ${arrayTags('country', metadata.countries || [], escape)}
+  ${arrayTags('director', metadata.directors || [], escape)}
+  ${arrayTags('credits', metadata.writers || [], escape)}
+${actors}
+  <dateadded>${escape(metadata.dateAdded || '')}</dateadded>
+  ${fileInfo}
+</movie>`
+  }
 }

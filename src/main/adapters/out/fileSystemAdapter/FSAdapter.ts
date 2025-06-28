@@ -1,4 +1,11 @@
-import { readdirSync, readFileSync, existsSync } from 'fs'
+import {
+  readdirSync,
+  readFileSync,
+  existsSync,
+  writeFileSync,
+  mkdirSync,
+  renameSync,
+} from 'fs'
 import { FileSystemPort } from '@domain/ports/FileSystemPort'
 import path from 'path'
 
@@ -26,6 +33,20 @@ export class FSAdapter implements FileSystemPort {
 
   checkFileExists(filePath: string): boolean {
     return existsSync(filePath)
+  }
+
+  writeFile(filePath: string, content: string | Buffer): void {
+    writeFileSync(filePath, content)
+  }
+
+  mkdir(dirPath: string): void {
+    if (!existsSync(dirPath)) {
+      mkdirSync(dirPath, { recursive: true })
+    }
+  }
+
+  moveFile(srcPath: string, destPath: string): void {
+    renameSync(srcPath, destPath)
   }
 }
 

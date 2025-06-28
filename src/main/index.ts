@@ -17,12 +17,15 @@ import { GetConfigurationUseCase } from '@domain/useCases/settings/getConfigurat
 import { SaveConfigurationUseCase } from '@domain/useCases/settings/saveConfigurationUseCase'
 import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/selectLibraryFolderUseCase'
 import { GetMovieImageUseCase } from '@domain/useCases/movies/getMovieImageUseCase'
+import { CleanLocalMovieWithSelectedMovie } from '@domain/useCases/movies/cleanLocalMovieWithSelectedMovie'
+import { HTTPAdapter } from '@adapters/out/httpAdapter/HTTPAdapter'
 
 function initializeApp() {
   const configurationAdapter = new ElectronConfigurationAdapter()
   const fileSystemAdapter = new FSAdapter()
   const metadataAdapter = new NFOAdapter()
   const movieDBAdapter = new TMDBAdapter(process.env.DB_TOKEN ?? '')
+  const httpAdapter = new HTTPAdapter()
 
   const getConfigurationUseCase = new GetConfigurationUseCase(
     configurationAdapter
@@ -55,6 +58,14 @@ function initializeApp() {
     initializeNewLibraryUseCase
   )
   const listMoviesByTitleOnDBUseCase = new ListMoviesByTitleOnDB(movieDBAdapter)
+  const cleanLocalMovieWithSelectedMovieUseCase =
+    new CleanLocalMovieWithSelectedMovie(
+      movieDBAdapter,
+      fileSystemAdapter,
+      metadataAdapter,
+      configurationAdapter,
+      httpAdapter
+    )
 
   firstInitializationUseCase.execute()
 
@@ -66,6 +77,7 @@ function initializeApp() {
   comAdapter.startGetMovieMetadata(getMovieMetadataUseCase)
   comAdapter.startGetMovieImage(getMovieImageUseCase)
   comAdapter.startGetRelatedMoviesFromDB(listMoviesByTitleOnDBUseCase)
+  comAdapter.startCleanLocalMovie(cleanLocalMovieWithSelectedMovieUseCase)
 }
 
 function createWindow(): void {

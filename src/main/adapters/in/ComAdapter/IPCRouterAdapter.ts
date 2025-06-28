@@ -6,6 +6,7 @@ import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/selectLibr
 import { GetMovieMetadataUseCase } from '@domain/useCases/movies/getMovieMetadataUseCase'
 import { GetMovieImageUseCase } from '@domain/useCases/movies/getMovieImageUseCase'
 import { ListMoviesByTitleOnDB } from '@domain/useCases/movies/listMoviesByTitleOnDB'
+import { CleanLocalMovieWithSelectedMovie } from '@domain/useCases/movies/cleanLocalMovieWithSelectedMovie'
 export class IPCRouterAdapter implements ComAdapterPort {
   constructor() {}
 
@@ -58,5 +59,20 @@ export class IPCRouterAdapter implements ComAdapterPort {
       const movies = await listMoviesByTitleOnDBUseCase.execute(title)
       return movies
     })
+  }
+
+  startCleanLocalMovie(
+    cleanLocalMovieWithSelectedMovieUseCase: CleanLocalMovieWithSelectedMovie
+  ) {
+    ipcMain.handle(
+      'cleanLocalMovie',
+      async (_, movieRelativePath: string, selectedMovieId: string) => {
+        const result = await cleanLocalMovieWithSelectedMovieUseCase.execute(
+          movieRelativePath,
+          selectedMovieId
+        )
+        return result
+      }
+    )
   }
 }
