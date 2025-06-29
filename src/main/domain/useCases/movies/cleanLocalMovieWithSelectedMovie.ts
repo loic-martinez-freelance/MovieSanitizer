@@ -68,7 +68,7 @@ export class CleanLocalMovieWithSelectedMovie {
     const newRelativePath = path.relative(libraryPath, destMoviePath)
     const updatedMovies = configuration.movies.map((movie) =>
       movie.relativePath === movieRelativePath
-        ? { ...movie, relativePath: newRelativePath }
+        ? { ...movie, relativePath: newRelativePath, title: movieTitle }
         : movie
     )
     this.configurationAdapter.saveConfiguration({ movies: updatedMovies })
