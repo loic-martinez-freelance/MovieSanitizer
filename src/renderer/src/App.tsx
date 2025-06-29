@@ -7,11 +7,9 @@ import { MovieWithMetadata, type Movie } from '@domain/ports/dtos/Movie'
 import MovieScraper from './components/MovieScraper'
 
 const App = () => {
-  const { getConfiguration, getMovieMetadata, getMovieImage, loading, error } =
-    useIPC()
+  const { getConfiguration, getMovieMetadata, getMovieImage, error } = useIPC()
   const [movies, setMovies] = useState<Movie[]>([])
   const [selectedMovie, setSelectedMovie] = useState<Movie>()
-  const [searchQuery, setSearchQuery] = useState('')
   const [selectedMovieWithDetails, setSelectedMovieWithDetails] =
     useState<MovieWithMetadata>()
 
@@ -50,14 +48,6 @@ const App = () => {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        Loading...
-      </div>
-    )
-  }
-
   if (error) {
     return (
       <div className="flex items-center justify-center h-screen text-red-500">
@@ -72,8 +62,6 @@ const App = () => {
       <div className="flex flex-1 overflow-hidden">
         <MovieList
           movies={movies}
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
           onMovieSelect={setSelectedMovie}
           selectedMovie={selectedMovie}
         />

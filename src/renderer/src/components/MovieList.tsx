@@ -1,23 +1,22 @@
-import { Search } from 'lucide-react'
+import { useState } from 'react'
+import { Search, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 import type { Movie } from '@domain/ports/dtos/Movie'
 
 interface MovieListProps {
   movies: Movie[]
   selectedMovie?: Movie
-  searchQuery: string
-  onSearchChange: (query: string) => void
   onMovieSelect: (movie: Movie) => void
 }
 
 export const MovieList = ({
   movies,
   selectedMovie,
-  searchQuery,
-  onSearchChange,
   onMovieSelect,
 }: MovieListProps) => {
+  const [searchQuery, setSearchQuery] = useState('')
   const filteredMovies = movies.filter((movie) =>
     movie.title.toLowerCase().includes(searchQuery.toLowerCase())
   )
@@ -30,9 +29,21 @@ export const MovieList = ({
           <Input
             placeholder="Rechercher un film..."
             value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="pl-8"
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-8 pr-8"
           />
+          {searchQuery && (
+            <Button
+              type="button"
+              size="icon"
+              variant="ghost"
+              className="absolute right-2 inset-y-0 my-auto h-6 w-6 p-0 flex items-center justify-center"
+              onClick={() => setSearchQuery('')}
+              aria-label="Effacer la recherche"
+            >
+              <X className="h-4 w-4 text-muted-foreground" />
+            </Button>
+          )}
         </div>
       </div>
       <div className="flex-1 overflow-y-auto">
