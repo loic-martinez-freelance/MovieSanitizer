@@ -58,7 +58,7 @@ export class CleanLocalMovieWithSelectedMovie {
     if (posterUrl) {
       // Try to get the extension from the URL, fallback to .jpg
       const posterExt = path.extname(new URL(posterUrl).pathname) || '.jpg'
-      const posterFileName = `${folderName}${posterExt}`
+      const posterFileName = `${folderName}-poster${posterExt}`
       const posterPath = path.join(targetDir, posterFileName)
       const posterBuffer = await this.httpAdapter.downloadFile(posterUrl)
       this.fileSystemAdapter.writeFile(posterPath, posterBuffer)

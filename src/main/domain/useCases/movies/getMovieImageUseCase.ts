@@ -16,19 +16,17 @@ export class GetMovieImageUseCase {
       path.extname(movieRelativePath)
     )
 
-    const relatedPosterPath =
-      path.join(configuration.libraryPath, basePath, '/') +
-      fileNameWithoutExtension +
-      '-poster.jpg'
-
-    const relatedLocalPosterExists =
-      this.fileSystemAdapter.checkFileExists(relatedPosterPath)
-    if (relatedLocalPosterExists) {
-      const relatedLocalPosterContent =
-        this.fileSystemAdapter.getFileContentAsBuffer(relatedPosterPath)
-      return relatedLocalPosterContent
+    const possibleExtensions = ['.jpg', '.jpeg', '.png', '.webp']
+    for (const ext of possibleExtensions) {
+      const relatedPosterPath = path.join(
+        configuration.libraryPath,
+        basePath,
+        fileNameWithoutExtension + '-poster' + ext
+      )
+      if (this.fileSystemAdapter.checkFileExists(relatedPosterPath)) {
+        return this.fileSystemAdapter.getFileContentAsBuffer(relatedPosterPath)
+      }
     }
-
     return undefined
   }
 }
