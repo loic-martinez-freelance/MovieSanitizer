@@ -16,18 +16,7 @@ const App = () => {
     useState<MovieWithMetadata>()
 
   useEffect(() => {
-    const loadMovies = async () => {
-      try {
-        const config = await getConfiguration()
-        if (config.movies && config.movies.length > 0) {
-          setMovies(config.movies)
-          setSelectedMovie(config.movies[0])
-        }
-      } catch (err) {
-        console.error('Failed to load movies:', err)
-      }
-    }
-    loadMovies()
+    refreshMovies()
   }, [getConfiguration])
 
   useEffect(() => {
@@ -49,6 +38,18 @@ const App = () => {
     loadMovieDetails()
   }, [selectedMovie, getMovieMetadata, getMovieImage])
 
+  const refreshMovies = async () => {
+    try {
+      const config = await getConfiguration()
+      if (config.movies && config.movies.length > 0) {
+        setMovies(config.movies)
+        setSelectedMovie(config.movies[0])
+      }
+    } catch (err) {
+      console.error('Failed to load movies:', err)
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -67,7 +68,7 @@ const App = () => {
 
   return (
     <div className="flex flex-col h-screen bg-background text-foreground dark">
-      <TopBar />
+      <TopBar onRefresh={refreshMovies} />
       <div className="flex flex-1 overflow-hidden">
         <MovieList
           movies={movies}
