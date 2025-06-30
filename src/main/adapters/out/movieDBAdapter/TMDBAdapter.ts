@@ -22,7 +22,7 @@ export class TMDBAdapter implements MovieDBAdapterPort {
   async getMovieMetadata(movieId: string): Promise<MovieFullMetadata> {
     try {
       const response = await this.fetchWithAuth(
-        `${this.baseUrl}/movie/${movieId}?append_to_response=credits,videos,keywords`
+        `${this.baseUrl}/movie/${movieId}?append_to_response=credits,videos,keywords&language=fr-FR`
       )
 
       if (!response.ok) {
@@ -114,7 +114,7 @@ export class TMDBAdapter implements MovieDBAdapterPort {
       const response = await this.fetchWithAuth(
         `${this.baseUrl}/search/movie?query=${encodeURIComponent(
           query
-        )}&include_adult=false&page=1`
+        )}&include_adult=false&page=1&language=fr-FR`
       )
 
       if (!response.ok) {
@@ -140,22 +140,42 @@ export class TMDBAdapter implements MovieDBAdapterPort {
 
   async getMoviePosterUrl(movieId: string): Promise<string> {
     try {
-      const response = await this.fetchWithAuth(
-        `${this.baseUrl}/movie/${movieId}/images`
+      // Try fetching French posters first
+      let response = await this.fetchWithAuth(
+        `${this.baseUrl}/movie/${movieId}/images?language=fr-FR`
       )
 
       if (!response.ok) {
         throw new Error(`Failed to fetch movie poster: ${response.statusText}`)
       }
 
-      const data = await response.json()
+      let data = await response.json()
 
-      if (!data.posters || data.posters.length === 0) {
-        return ''
+      if (data.posters && data.posters.length > 0) {
+        // Return the first French poster
+        return `${this.imageBaseUrl}${data.posters[0].file_path}`
       }
 
-      // Return the first poster
-      return `${this.imageBaseUrl}${data.posters[0].file_path}`
+      // Fallback: Try fetching English posters
+      response = await this.fetchWithAuth(
+        `${this.baseUrl}/movie/${movieId}/images`
+      )
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to fetch movie poster (fallback): ${response.statusText}`
+        )
+      }
+
+      data = await response.json()
+
+      if (data.posters && data.posters.length > 0) {
+        // Return the first English poster
+        return `${this.imageBaseUrl}${data.posters[0].file_path}`
+      }
+
+      // No poster found
+      return ''
     } catch (error) {
       console.error('Error fetching movie poster:', error)
       throw error
