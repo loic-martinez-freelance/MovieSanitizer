@@ -138,7 +138,7 @@ export class TMDBAdapter implements MovieDBAdapterPort {
     }
   }
 
-  async getMoviePoster(movieId: string): Promise<string> {
+  async getMoviePosterUrl(movieId: string): Promise<string> {
     try {
       const response = await this.fetchWithAuth(
         `${this.baseUrl}/movie/${movieId}/images`

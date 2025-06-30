@@ -52,7 +52,8 @@ export class CleanLocalMovieWithSelectedMovie {
     const destMoviePath = path.join(targetDir, destMovieFileName)
     this.fileSystemAdapter.moveFile(srcMoviePath, destMoviePath)
 
-    const posterUrl = await this.movieDBAdapter.getMoviePoster(selectedMovieId)
+    const posterUrl =
+      await this.movieDBAdapter.getMoviePosterUrl(selectedMovieId)
 
     // Download and save the poster file if posterUrl exists
     if (posterUrl) {

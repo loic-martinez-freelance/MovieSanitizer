@@ -5,5 +5,5 @@ export interface MovieDBAdapterPort {
   searchMovies(
     query: string
   ): Promise<{ id: string; title: string; year: string }[]>
-  getMoviePoster(movieId: string): Promise<string>
+  getMoviePosterUrl(movieId: string): Promise<string>
 }
