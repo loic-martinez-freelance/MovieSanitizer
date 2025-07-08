@@ -11,7 +11,7 @@ function sanitizeFilename(name: string): string {
   return name.replace(/[\\/:*?"<>|]/g, '').trim()
 }
 
-export class CleanLocalMovieWithSelectedMovie {
+export class CleanLocalMovieWithSelectedMovieUseCase {
   constructor(
     private readonly movieDBAdapter: MovieDBAdapterPort,
     private readonly fileSystemAdapter: FileSystemPort,

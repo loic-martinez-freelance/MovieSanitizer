@@ -1,6 +1,6 @@
 import { ConfigurationPort } from '@domain/ports/ConfigurationPort'
 import { Configuration } from '@domain/ports/dtos/Configuration'
-import { InitializeNewLibraryUseCase } from '../movies/initializeNewLibrary'
+import { InitializeNewLibraryUseCase } from '../movies/InitializeNewLibraryUseCase'
 
 export class SaveConfigurationUseCase {
   constructor(

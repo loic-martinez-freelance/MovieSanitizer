@@ -1,12 +1,12 @@
 import { ipcMain } from 'electron'
 import { ComAdapterPort } from '@domain/ports/ComAdapterPort'
-import { SaveConfigurationUseCase } from '@domain/useCases/settings/saveConfigurationUseCase'
-import { GetConfigurationUseCase } from '@domain/useCases/settings/getConfigurationUseCase'
-import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/selectLibraryFolderUseCase'
-import { GetMovieMetadataUseCase } from '@domain/useCases/movies/getMovieMetadataUseCase'
-import { GetMovieImageUseCase } from '@domain/useCases/movies/getMovieImageUseCase'
-import { ListMoviesByTitleOnDB } from '@domain/useCases/movies/listMoviesByTitleOnDB'
-import { CleanLocalMovieWithSelectedMovie } from '@domain/useCases/movies/cleanLocalMovieWithSelectedMovie'
+import { SaveConfigurationUseCase } from '@domain/useCases/settings/SaveConfigurationUseCase'
+import { GetConfigurationUseCase } from '@domain/useCases/settings/GetConfigurationUseCase'
+import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/SelectLibraryFolderUseCase'
+import { GetMovieMetadataUseCase } from '@domain/useCases/movies/GetMovieMetadataUseCase'
+import { GetMovieImageUseCase } from '@domain/useCases/movies/GetMovieImageUseCase'
+import { ListMoviesByTitleOnDBUseCase } from '@domain/useCases/movies/ListMoviesByTitleOnDBUseCase'
+import { CleanLocalMovieWithSelectedMovieUseCase } from '@domain/useCases/movies/CleanLocalMovieWithSelectedMovieUseCase'
 export class IPCRouterAdapter implements ComAdapterPort {
   constructor() {}
 
@@ -53,7 +53,7 @@ export class IPCRouterAdapter implements ComAdapterPort {
   }
 
   startGetRelatedMoviesFromDB(
-    listMoviesByTitleOnDBUseCase: ListMoviesByTitleOnDB
+    listMoviesByTitleOnDBUseCase: ListMoviesByTitleOnDBUseCase
   ) {
     ipcMain.handle('getRelatedMoviesFromDB', async (_, title: string) => {
       const movies = await listMoviesByTitleOnDBUseCase.execute(title)
@@ -62,7 +62,7 @@ export class IPCRouterAdapter implements ComAdapterPort {
   }
 
   startCleanLocalMovie(
-    cleanLocalMovieWithSelectedMovieUseCase: CleanLocalMovieWithSelectedMovie
+    cleanLocalMovieWithSelectedMovieUseCase: CleanLocalMovieWithSelectedMovieUseCase
   ) {
     ipcMain.handle(
       'cleanLocalMovie',

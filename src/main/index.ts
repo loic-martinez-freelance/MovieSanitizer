@@ -8,16 +8,16 @@ import { ElectronConfigurationAdapter } from '@adapters/out/configurationAdapter
 import { FSAdapter } from '@adapters/out/fileSystemAdapter/FSAdapter'
 import { NFOAdapter } from '@adapters/out/metadataAdapter/NFOAdapter'
 import { TMDBAdapter } from '@adapters/out/movieDBAdapter/TMDBAdapter'
-import { GetMovieMetadataUseCase } from '@domain/useCases/movies/getMovieMetadataUseCase'
-import { InitializeNewLibraryUseCase } from '@domain/useCases/movies/initializeNewLibrary'
-import { ListMoviesByTitleOnDB } from '@domain/useCases/movies/listMoviesByTitleOnDB'
-import { ListNewMoviesUseCase } from '@domain/useCases/movies/listNewMovies'
-import { FirstInitializationUseCase } from '@domain/useCases/settings/firstInitializationUseCase'
-import { GetConfigurationUseCase } from '@domain/useCases/settings/getConfigurationUseCase'
-import { SaveConfigurationUseCase } from '@domain/useCases/settings/saveConfigurationUseCase'
-import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/selectLibraryFolderUseCase'
-import { GetMovieImageUseCase } from '@domain/useCases/movies/getMovieImageUseCase'
-import { CleanLocalMovieWithSelectedMovie } from '@domain/useCases/movies/cleanLocalMovieWithSelectedMovie'
+import { GetMovieMetadataUseCase } from '@domain/useCases/movies/GetMovieMetadataUseCase'
+import { InitializeNewLibraryUseCase } from '@domain/useCases/movies/InitializeNewLibraryUseCase'
+import { ListMoviesByTitleOnDBUseCase } from '@domain/useCases/movies/ListMoviesByTitleOnDBUseCase'
+import { ListNewMoviesUseCase } from '@domain/useCases/movies/ListNewMoviesUseCase'
+import { FirstInitializationUseCase } from '@domain/useCases/settings/FirstInitializationUseCase'
+import { GetConfigurationUseCase } from '@domain/useCases/settings/GetConfigurationUseCase'
+import { SaveConfigurationUseCase } from '@domain/useCases/settings/SaveConfigurationUseCase'
+import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/SelectLibraryFolderUseCase'
+import { GetMovieImageUseCase } from '@domain/useCases/movies/GetMovieImageUseCase'
+import { CleanLocalMovieWithSelectedMovieUseCase } from '@domain/useCases/movies/CleanLocalMovieWithSelectedMovieUseCase'
 import { HTTPAdapter } from '@adapters/out/httpAdapter/HTTPAdapter'
 
 function initializeApp() {
@@ -57,9 +57,11 @@ function initializeApp() {
     configurationAdapter,
     initializeNewLibraryUseCase
   )
-  const listMoviesByTitleOnDBUseCase = new ListMoviesByTitleOnDB(movieDBAdapter)
+  const listMoviesByTitleOnDBUseCase = new ListMoviesByTitleOnDBUseCase(
+    movieDBAdapter
+  )
   const cleanLocalMovieWithSelectedMovieUseCase =
-    new CleanLocalMovieWithSelectedMovie(
+    new CleanLocalMovieWithSelectedMovieUseCase(
       movieDBAdapter,
       fileSystemAdapter,
       metadataAdapter,

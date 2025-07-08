@@ -1,6 +1,6 @@
 import { ConfigurationPort } from '@domain/ports/ConfigurationPort'
 import { MovieWithMetadata } from '@domain/ports/dtos/Movie'
-import { GetMovieMetadataUseCase } from './getMovieMetadataUseCase'
+import { GetMovieMetadataUseCase } from './GetMovieMetadataUseCase'
 
 export class GetMovieUseCase {
   constructor(
