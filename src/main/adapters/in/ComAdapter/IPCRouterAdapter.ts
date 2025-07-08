@@ -7,6 +7,7 @@ import { GetMovieMetadataUseCase } from '@domain/useCases/movies/GetMovieMetadat
 import { GetMovieImageUseCase } from '@domain/useCases/movies/GetMovieImageUseCase'
 import { ListMoviesByTitleOnDBUseCase } from '@domain/useCases/movies/ListMoviesByTitleOnDBUseCase'
 import { CleanLocalMovieWithSelectedMovieUseCase } from '@domain/useCases/movies/CleanLocalMovieWithSelectedMovieUseCase'
+import { SearchAndAddNewMoviesUseCase } from '@domain/useCases/movies/SearchAndAddNewMoviesUseCase'
 export class IPCRouterAdapter implements ComAdapterPort {
   constructor() {}
 
@@ -74,5 +75,11 @@ export class IPCRouterAdapter implements ComAdapterPort {
         return result
       }
     )
+  }
+
+  startSearchNewMovies(searchNewMovies: SearchAndAddNewMoviesUseCase) {
+    ipcMain.on('searchNewMovies', () => {
+      searchNewMovies.execute()
+    })
   }
 }

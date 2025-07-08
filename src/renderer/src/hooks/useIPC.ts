@@ -138,6 +138,18 @@ export const useIPC = () => {
     []
   )
 
+  const searchAndAddNewMovies = useCallback(async (): Promise<void> => {
+    try {
+      setLoading(true)
+      window.electron.ipcRenderer.send('searchNewMovies')
+    } catch (err) {
+      setError(err as Error)
+      throw err
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
   return {
     error,
     loading,
@@ -148,5 +160,6 @@ export const useIPC = () => {
     getMovieImage,
     getRelatedMoviesFromDB,
     cleanLocalMovie,
+    searchAndAddNewMovies,
   }
 }

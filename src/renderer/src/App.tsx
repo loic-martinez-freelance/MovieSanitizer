@@ -7,7 +7,13 @@ import { MovieWithMetadata, type Movie } from '@domain/ports/dtos/Movie'
 import MovieScraper from './components/MovieScraper'
 
 const App = () => {
-  const { getConfiguration, getMovieMetadata, getMovieImage, error } = useIPC()
+  const {
+    getConfiguration,
+    getMovieMetadata,
+    getMovieImage,
+    searchAndAddNewMovies,
+    error,
+  } = useIPC()
   const [movies, setMovies] = useState<Movie[]>([])
   const [selectedMovie, setSelectedMovie] = useState<Movie>()
   const [selectedMovieWithDetails, setSelectedMovieWithDetails] =
@@ -38,6 +44,7 @@ const App = () => {
 
   const refreshMovies = async () => {
     try {
+      await searchAndAddNewMovies()
       const config = await getConfiguration()
       if (config.movies && config.movies.length > 0) {
         setMovies(config.movies)
