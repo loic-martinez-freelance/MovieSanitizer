@@ -43,12 +43,18 @@ const App = () => {
   }, [selectedMovie, getMovieMetadata, getMovieImage])
 
   const refreshMovies = async () => {
+    const prevSelectedPath = selectedMovie?.relativePath
     try {
       await searchAndAddNewMovies()
       const config = await getConfiguration()
       if (config.movies && config.movies.length > 0) {
         setMovies(config.movies)
-        setSelectedMovie(config.movies[0])
+        const found = prevSelectedPath
+          ? config.movies.find(
+              (m: Movie) => m.relativePath === prevSelectedPath
+            )
+          : undefined
+        setSelectedMovie(found || config.movies[0])
       }
     } catch (err) {
       console.error('Failed to load movies:', err)
