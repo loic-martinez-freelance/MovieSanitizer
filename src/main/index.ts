@@ -50,8 +50,7 @@ function initializeApp() {
     configurationAdapter
   )
   const firstInitializationUseCase = new FirstInitializationUseCase(
-    configurationAdapter,
-    initializeNewLibraryUseCase
+    configurationAdapter
   )
   const saveConfigurationUseCase = new SaveConfigurationUseCase(
     configurationAdapter,

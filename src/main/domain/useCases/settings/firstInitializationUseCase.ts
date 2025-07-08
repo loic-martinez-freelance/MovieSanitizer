@@ -1,16 +1,11 @@
 import { ConfigurationPort } from '@domain/ports/ConfigurationPort'
-import { InitializeNewLibraryUseCase } from '../movies/InitializeNewLibraryUseCase'
 
 export class FirstInitializationUseCase {
-  constructor(
-    private readonly configurationAdapter: ConfigurationPort,
-    private readonly initializeNewLibraryUseCase: InitializeNewLibraryUseCase
-  ) {}
+  constructor(private readonly configurationAdapter: ConfigurationPort) {}
 
   execute() {
     if (this.configurationAdapter.isFirstInitialization()) {
       this.configurationAdapter.initializeConfiguration()
-      this.initializeNewLibraryUseCase.execute()
     }
   }
 }
