@@ -75,7 +75,12 @@ const App = () => {
         {selectedMovieWithDetails && selectedMovieWithDetails.metadata ? (
           <MovieDetails movie={selectedMovieWithDetails} />
         ) : (
-          selectedMovie && <MovieScraper movie={selectedMovie}></MovieScraper>
+          selectedMovie && (
+            <MovieScraper
+              movie={selectedMovie}
+              onMovieUpdated={refreshMovies}
+            />
+          )
         )}
       </div>
     </div>

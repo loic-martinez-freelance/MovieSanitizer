@@ -12,7 +12,12 @@ type SearchResult = {
   year: string
 }
 
-const MovieScraper = ({ movie }: { movie: Movie }) => {
+type MovieScraperProps = {
+  movie: Movie
+  onMovieUpdated?: () => void
+}
+
+const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
   const [searchQuery, setSearchQuery] = useState(movie.title)
   const [relatedMovies, setRelatedMovies] = useState<SearchResult[]>([])
   const { loading, error, getRelatedMoviesFromDB, cleanLocalMovie } = useIPC()
@@ -20,8 +25,9 @@ const MovieScraper = ({ movie }: { movie: Movie }) => {
   const handleSelectMovie = async (selectedMovieId: string) => {
     try {
       await cleanLocalMovie(movie.relativePath, selectedMovieId)
-      // You might want to add a callback here to notify the parent component
-      // that the movie has been updated
+      if (onMovieUpdated) {
+        onMovieUpdated()
+      }
     } catch (err) {
       console.error('Error cleaning movie:', err)
     }
@@ -82,35 +88,37 @@ const MovieScraper = ({ movie }: { movie: Movie }) => {
         </div>
       )}
 
-      <div className="flex gap-4 overflow-y-auto flex-col">
-        {relatedMovies.map((relatedMovie) => (
-          <Card
-            key={relatedMovie.id}
-            className="transition-colors hover:bg-accent/50"
-          >
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between gap-4">
-                <div>
-                  <h3 className="font-semibold text-lg">
-                    {relatedMovie.title}
-                  </h3>
-                  {relatedMovie.year && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {relatedMovie.year}
-                    </p>
-                  )}
+      {!loading && (
+        <div className="flex gap-4 overflow-y-auto flex-col">
+          {relatedMovies.map((relatedMovie) => (
+            <Card
+              key={relatedMovie.id}
+              className="transition-colors hover:bg-accent/50"
+            >
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div>
+                    <h3 className="font-semibold text-lg">
+                      {relatedMovie.title}
+                    </h3>
+                    {relatedMovie.year && (
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {relatedMovie.year}
+                      </p>
+                    )}
+                  </div>
+                  <Button
+                    onClick={() => handleSelectMovie(relatedMovie.id)}
+                    disabled={loading}
+                  >
+                    {loading ? 'Mise à jour...' : 'Choisir ce film'}
+                  </Button>
                 </div>
-                <Button
-                  onClick={() => handleSelectMovie(relatedMovie.id)}
-                  disabled={loading}
-                >
-                  {loading ? 'Mise à jour...' : 'Choisir ce film'}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
