@@ -43,10 +43,14 @@ const App = () => {
     loadMovieDetails()
   }, [selectedMovie, getMovieMetadata, getMovieImage])
 
+  const refreshAndAddNewMovies = async () => {
+    await searchAndAddNewMovies()
+    await refreshMovies()
+  }
+
   const refreshMovies = async () => {
     const prevSelectedPath = selectedMovie?.relativePath
     try {
-      await searchAndAddNewMovies()
       const config = await getConfiguration()
       if (config.movies && config.movies.length > 0) {
         setMovies(config.movies)
@@ -80,7 +84,7 @@ const App = () => {
 
   return (
     <div className="flex flex-col h-screen bg-background text-foreground dark">
-      <TopBar onRefresh={refreshMovies} />
+      <TopBar onRefresh={refreshAndAddNewMovies} />
       <div className="flex flex-1 overflow-hidden">
         <MovieList
           movies={movies}
