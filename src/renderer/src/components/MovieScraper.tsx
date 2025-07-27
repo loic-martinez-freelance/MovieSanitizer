@@ -20,9 +20,11 @@ type MovieScraperProps = {
 const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
   const [searchQuery, setSearchQuery] = useState(movie.title)
   const [relatedMovies, setRelatedMovies] = useState<SearchResult[]>([])
-  const { loading, error, getRelatedMoviesFromDB, cleanLocalMovie } = useIPC()
+  const [loading, setLoading] = useState(false)
+  const { error, getRelatedMoviesFromDB, cleanLocalMovie } = useIPC()
 
   const handleSelectMovie = async (selectedMovieId: string) => {
+    setLoading(true)
     try {
       await cleanLocalMovie(movie.relativePath, selectedMovieId)
       if (onMovieUpdated) {
@@ -30,6 +32,8 @@ const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
       }
     } catch (err) {
       console.error('Error cleaning movie:', err)
+    } finally {
+      setLoading(false)
     }
   }
 
