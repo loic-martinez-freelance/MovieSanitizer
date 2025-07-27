@@ -14,6 +14,7 @@ const App = () => {
     searchAndAddNewMovies,
     openMovieInExplorer,
     error,
+    loading,
   } = useIPC()
   const [movies, setMovies] = useState<Movie[]>([])
   const [selectedMovie, setSelectedMovie] = useState<Movie>()
@@ -78,6 +79,14 @@ const App = () => {
     return (
       <div className="flex items-center justify-center h-screen text-red-500">
         Error: {error.message}
+      </div>
+    )
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-background text-foreground dark">
+        <div className="text-xl animate-pulse">Actualisation des films...</div>
       </div>
     )
   }
