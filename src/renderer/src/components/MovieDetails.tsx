@@ -1,5 +1,11 @@
-import { FolderOpen } from 'lucide-react'
+import { FolderOpen, MoreHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { MovieWithMetadata } from '@domain/ports/dtos/Movie'
 
 const formatRuntime = (minutes: number): string => {
@@ -29,19 +35,28 @@ export const MovieDetails = ({
   return (
     <div className="flex-1 p-6 overflow-y-auto">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6 flex items-center gap-4">
+        <div className="mb-6 flex items-center justify-between gap-4">
           <h1 className="text-3xl font-bold">{metadata.title}</h1>
           {onOpenInExplorer && (
-            <Button
-              type="button"
-              size="icon"
-              variant="outline"
-              className="h-8 w-8"
-              onClick={() => onOpenInExplorer(movie)}
-              aria-label="Ouvrir dans l'explorateur"
-            >
-              <FolderOpen className="h-4 w-4" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="ghost"
+                  className="h-8 w-8"
+                  aria-label="Menu d'actions"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => onOpenInExplorer(movie)}>
+                  <FolderOpen className="h-4 w-4 mr-2" />
+                  Ouvrir dans l'explorateur
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
         <div className="flex gap-8">
