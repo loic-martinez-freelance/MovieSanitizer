@@ -14,12 +14,12 @@ const App = () => {
     searchAndAddNewMovies,
     openMovieInExplorer,
     error,
-    loading,
   } = useIPC()
   const [movies, setMovies] = useState<Movie[]>([])
   const [selectedMovie, setSelectedMovie] = useState<Movie>()
   const [selectedMovieWithDetails, setSelectedMovieWithDetails] =
     useState<MovieWithMetadata>()
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     refreshMovies()
@@ -45,8 +45,13 @@ const App = () => {
   }, [selectedMovie, getMovieMetadata, getMovieImage])
 
   const refreshAndAddNewMovies = async () => {
-    await searchAndAddNewMovies()
-    await refreshMovies()
+    setLoading(true)
+    try {
+      await searchAndAddNewMovies()
+      await refreshMovies()
+    } finally {
+      setLoading(false)
+    }
   }
 
   const refreshMovies = async () => {

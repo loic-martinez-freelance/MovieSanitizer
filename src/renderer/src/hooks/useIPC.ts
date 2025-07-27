@@ -5,32 +5,25 @@ import type { MovieFullMetadata } from '@domain/ports/dtos/Movie'
 
 export const useIPC = () => {
   const [error, setError] = useState<Error | null>(null)
-  const [loading, setLoading] = useState(false)
 
   const getConfiguration = useCallback(async (): Promise<Configuration> => {
     try {
-      setLoading(true)
       const config =
         await window.electron.ipcRenderer.invoke('getConfiguration')
       return config
     } catch (err) {
       setError(err as Error)
       throw err
-    } finally {
-      setLoading(false)
     }
   }, [])
 
   const saveConfiguration = useCallback(
     async (config: Partial<Configuration>): Promise<void> => {
       try {
-        setLoading(true)
         window.electron.ipcRenderer.send('saveConfiguration', config)
       } catch (err) {
         setError(err as Error)
         throw err
-      } finally {
-        setLoading(false)
       }
     },
     []
@@ -38,7 +31,6 @@ export const useIPC = () => {
 
   const selectLibraryFolder = async () => {
     try {
-      setLoading(true)
       const folder = await window.electron.ipcRenderer.invoke(
         'selectLibraryFolder'
       )
@@ -46,8 +38,6 @@ export const useIPC = () => {
     } catch (err) {
       setError(err as Error)
       throw err
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -56,7 +46,6 @@ export const useIPC = () => {
       movieRelativePath: string
     ): Promise<MovieFullMetadata | undefined> => {
       try {
-        setLoading(true)
         const metadata = await window.electron.ipcRenderer.invoke(
           'getMovieMetadata',
           movieRelativePath
@@ -65,8 +54,6 @@ export const useIPC = () => {
       } catch (err) {
         setError(err as Error)
         throw err
-      } finally {
-        setLoading(false)
       }
     },
     []
@@ -75,7 +62,6 @@ export const useIPC = () => {
   const getMovieImage = useCallback(
     async (movieRelativePath: string): Promise<string | undefined> => {
       try {
-        setLoading(true)
         const imageBuffer = await window.electron.ipcRenderer.invoke(
           'getMovieImage',
           movieRelativePath
@@ -88,8 +74,6 @@ export const useIPC = () => {
       } catch (err) {
         setError(err as Error)
         throw err
-      } finally {
-        setLoading(false)
       }
     },
     []
@@ -100,7 +84,6 @@ export const useIPC = () => {
       title: string
     ): Promise<{ id: string; title: string; year: string }[]> => {
       try {
-        setLoading(true)
         const movies = await window.electron.ipcRenderer.invoke(
           'getRelatedMoviesFromDB',
           title
@@ -109,8 +92,6 @@ export const useIPC = () => {
       } catch (err) {
         setError(err as Error)
         throw err
-      } finally {
-        setLoading(false)
       }
     },
     []
@@ -122,7 +103,6 @@ export const useIPC = () => {
       selectedMovieId: string
     ): Promise<void> => {
       try {
-        setLoading(true)
         await window.electron.ipcRenderer.invoke(
           'cleanLocalMovie',
           movieRelativePath,
@@ -131,8 +111,6 @@ export const useIPC = () => {
       } catch (err) {
         setError(err as Error)
         throw err
-      } finally {
-        setLoading(false)
       }
     },
     []
@@ -140,20 +118,16 @@ export const useIPC = () => {
 
   const searchAndAddNewMovies = useCallback(async (): Promise<void> => {
     try {
-      setLoading(true)
       window.electron.ipcRenderer.send('searchNewMovies')
     } catch (err) {
       setError(err as Error)
       throw err
-    } finally {
-      setLoading(false)
     }
   }, [])
 
   const openMovieInExplorer = useCallback(
     async (movieRelativePath: string): Promise<void> => {
       try {
-        setLoading(true)
         await window.electron.ipcRenderer.invoke(
           'openMovieInExplorer',
           movieRelativePath
@@ -161,8 +135,6 @@ export const useIPC = () => {
       } catch (err) {
         setError(err as Error)
         throw err
-      } finally {
-        setLoading(false)
       }
     },
     []
@@ -170,7 +142,6 @@ export const useIPC = () => {
 
   return {
     error,
-    loading,
     getConfiguration,
     saveConfiguration,
     selectLibraryFolder,
