@@ -8,6 +8,8 @@ import { GetMovieImageUseCase } from '@domain/useCases/movies/GetMovieImageUseCa
 import { ListMoviesByTitleOnDBUseCase } from '@domain/useCases/movies/ListMoviesByTitleOnDBUseCase'
 import { CleanLocalMovieWithSelectedMovieUseCase } from '@domain/useCases/movies/CleanLocalMovieWithSelectedMovieUseCase'
 import { SearchAndAddNewMoviesUseCase } from '@domain/useCases/movies/SearchAndAddNewMoviesUseCase'
+import { OpenMovieInExplorerUseCase } from '@domain/useCases/movies/OpenMovieInExplorerUseCase'
+
 export class IPCRouterAdapter implements ComAdapterPort {
   constructor() {}
 
@@ -81,5 +83,16 @@ export class IPCRouterAdapter implements ComAdapterPort {
     ipcMain.on('searchNewMovies', () => {
       searchNewMovies.execute()
     })
+  }
+
+  startOpenMovieInExplorer(
+    openMovieInExplorerUseCase: OpenMovieInExplorerUseCase
+  ) {
+    ipcMain.handle(
+      'openMovieInExplorer',
+      async (_, movieRelativePath: string) => {
+        openMovieInExplorerUseCase.execute(movieRelativePath)
+      }
+    )
   }
 }

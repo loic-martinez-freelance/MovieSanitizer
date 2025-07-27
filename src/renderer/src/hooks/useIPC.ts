@@ -150,6 +150,24 @@ export const useIPC = () => {
     }
   }, [])
 
+  const openMovieInExplorer = useCallback(
+    async (movieRelativePath: string): Promise<void> => {
+      try {
+        setLoading(true)
+        await window.electron.ipcRenderer.invoke(
+          'openMovieInExplorer',
+          movieRelativePath
+        )
+      } catch (err) {
+        setError(err as Error)
+        throw err
+      } finally {
+        setLoading(false)
+      }
+    },
+    []
+  )
+
   return {
     error,
     loading,
@@ -161,5 +179,6 @@ export const useIPC = () => {
     getRelatedMoviesFromDB,
     cleanLocalMovie,
     searchAndAddNewMovies,
+    openMovieInExplorer,
   }
 }

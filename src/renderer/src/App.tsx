@@ -12,6 +12,7 @@ const App = () => {
     getMovieMetadata,
     getMovieImage,
     searchAndAddNewMovies,
+    openMovieInExplorer,
     error,
   } = useIPC()
   const [movies, setMovies] = useState<Movie[]>([])
@@ -61,6 +62,14 @@ const App = () => {
     }
   }
 
+  const handleOpenInExplorer = async (movie: Movie | MovieWithMetadata) => {
+    try {
+      await openMovieInExplorer(movie.relativePath)
+    } catch (err) {
+      console.error('Failed to open movie in explorer:', err)
+    }
+  }
+
   if (error) {
     return (
       <div className="flex items-center justify-center h-screen text-red-500">
@@ -79,7 +88,10 @@ const App = () => {
           selectedMovie={selectedMovie}
         />
         {selectedMovieWithDetails && selectedMovieWithDetails.metadata ? (
-          <MovieDetails movie={selectedMovieWithDetails} />
+          <MovieDetails
+            movie={selectedMovieWithDetails}
+            onOpenInExplorer={handleOpenInExplorer}
+          />
         ) : (
           selectedMovie && (
             <MovieScraper

@@ -122,6 +122,20 @@
 
 ---
 
+### OpenMovieInExplorerUseCase
+
+- **Fichier** : src/main/domain/useCases/movies/OpenMovieInExplorerUseCase.ts
+- **Rôle** : Ouvre un film directement dans l'explorateur de fichiers du système d'exploitation (Finder sur macOS, Explorateur de fichiers sur Windows, etc.).
+- **Dépendances** :
+  - ConfigurationPort
+  - FileSystemPort
+- **Fonctionnement** :
+  1. Récupère le chemin complet en combinant le chemin de la bibliothèque avec le chemin relatif du film.
+  2. Vérifie l'existence du fichier avant de tenter de l'ouvrir.
+  3. Utilise la méthode `openFileInExplorer` du FileSystemPort pour ouvrir le fichier dans l'explorateur natif.
+
+---
+
 ## Use Cases liés à la configuration
 
 ### FirstInitializationUseCase

@@ -1,3 +1,5 @@
+import { FolderOpen } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import { MovieWithMetadata } from '@domain/ports/dtos/Movie'
 
 const formatRuntime = (minutes: number): string => {
@@ -9,7 +11,15 @@ const formatRuntime = (minutes: number): string => {
   return `${hours}h ${remainingMinutes}min`
 }
 
-export const MovieDetails = ({ movie }: { movie: MovieWithMetadata }) => {
+interface MovieDetailsProps {
+  movie: MovieWithMetadata
+  onOpenInExplorer?: (movie: MovieWithMetadata) => void
+}
+
+export const MovieDetails = ({
+  movie,
+  onOpenInExplorer,
+}: MovieDetailsProps) => {
   const metadata = movie.metadata
 
   if (!metadata) {
@@ -26,7 +36,21 @@ export const MovieDetails = ({ movie }: { movie: MovieWithMetadata }) => {
             </div>
           </div>
           <div className="flex-1">
-            <h1 className="text-3xl font-bold mb-4">{metadata.title}</h1>
+            <div className="flex items-center gap-4 mb-4">
+              <h1 className="text-3xl font-bold">{metadata.title}</h1>
+              {onOpenInExplorer && (
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="outline"
+                  className="h-8 w-8"
+                  onClick={() => onOpenInExplorer(movie)}
+                  aria-label="Ouvrir dans l'explorateur"
+                >
+                  <FolderOpen className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
                 <div className="text-sm text-muted-foreground">Année</div>

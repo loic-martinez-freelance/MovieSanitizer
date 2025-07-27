@@ -6,4 +6,5 @@ export interface FileSystemPort {
   writeFile(filePath: string, content: string | Buffer): void
   mkdir(dirPath: string): void
   moveFile(srcPath: string, destPath: string): void
+  openFileInExplorer(filePath: string): void
 }

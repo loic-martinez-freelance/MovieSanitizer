@@ -5,6 +5,7 @@
 Cet adapter implémente l'interface `ComAdapterPort` et fait le lien entre le backend Electron (main process) et le renderer via IPC. Il expose plusieurs méthodes pour router les événements IPC vers les use cases appropriés.
 
 ### Méthodes principales :
+
 - **startPingRouter()** : Écoute l'événement 'ping' et affiche l'argument reçu dans la console.
 - **startSaveConfiguration(saveConfigurationUseCase)** : Écoute 'saveConfiguration' et exécute le use case correspondant avec les données reçues.
 - **startGetConfiguration(getConfigurationUseCase)** : Gère 'getConfiguration' et retourne la configuration courante.
@@ -14,6 +15,7 @@ Cet adapter implémente l'interface `ComAdapterPort` et fait le lien entre le ba
 - **startGetRelatedMoviesFromDB(listMoviesByTitleOnDBUseCase)** : Gère 'getRelatedMoviesFromDB' et retourne les films correspondants à un titre.
 - **startCleanLocalMovie(cleanLocalMovieWithSelectedMovieUseCase)** : Gère 'cleanLocalMovie' pour nettoyer et organiser un film local avec les métadonnées sélectionnées.
 - **startSearchNewMovies(searchNewMovies)** : Écoute 'searchNewMovies' et lance la recherche/ajout de nouveaux films.
+- **startOpenMovieInExplorer(openMovieInExplorerUseCase)** : Gère 'openMovieInExplorer' et ouvre le film dans l'explorateur de fichiers natif.
 
 ---
 
@@ -22,12 +24,14 @@ Cet adapter implémente l'interface `ComAdapterPort` et fait le lien entre le ba
 Interface définissant les méthodes qu'un adapter de communication doit implémenter pour interagir avec les use cases principaux liés à la configuration et aux films.
 
 ### Méthodes :
+
 - startPingRouter()
 - startSaveConfiguration(saveConfigurationUseCase)
 - startGetConfiguration(getConfigurationUseCase)
 - startSelectLibraryFolder(selectLibraryFolderUseCase)
 - startGetMovieMetadata(getMovieMetadataUseCase)
 - startGetMovieImage(getMovieImageUseCase)
+- startOpenMovieInExplorer(openMovieInExplorerUseCase)
 
 ---
 
@@ -36,6 +40,7 @@ Interface définissant les méthodes qu'un adapter de communication doit implém
 Interface pour l'adapter d'accès à une base de données de films (ex: TMDB, IMDB, etc).
 
 ### Méthodes :
+
 - getMovieMetadata(movieId: string): Promise<MovieFullMetadata>
 - searchMovies(query: string): Promise<{ id: string; title: string; year: string }[]>
 - getMoviePosterUrl(movieId: string): Promise<string>
@@ -47,6 +52,7 @@ Interface pour l'adapter d'accès à une base de données de films (ex: TMDB, IM
 Interface pour l'adapter HTTP, principalement pour le téléchargement de fichiers.
 
 ### Méthodes :
+
 - downloadFile(url: string): Promise<Buffer>
 
 ---
@@ -56,6 +62,7 @@ Interface pour l'adapter HTTP, principalement pour le téléchargement de fichie
 Interface pour parser et générer des fichiers de métadonnées (ex: NFO).
 
 ### Méthodes :
+
 - parseContent(content: string): MovieFullMetadata
 - toNFO(metadata: MovieFullMetadata): string
 
@@ -66,6 +73,7 @@ Interface pour parser et générer des fichiers de métadonnées (ex: NFO).
 Interface pour l'accès au système de fichiers.
 
 ### Méthodes :
+
 - listFiles(path: string): string[]
 - getFileContentAsString(filePath: string): string
 - getFileContentAsBuffer(filePath: string): Buffer
@@ -73,6 +81,7 @@ Interface pour l'accès au système de fichiers.
 - writeFile(filePath: string, content: string | Buffer): void
 - mkdir(dirPath: string): void
 - moveFile(srcPath: string, destPath: string): void
+- openFileInExplorer(filePath: string): void
 
 ---
 
@@ -81,7 +90,8 @@ Interface pour l'accès au système de fichiers.
 Interface pour la gestion de la configuration de l'application.
 
 ### Méthodes :
+
 - initializeConfiguration(): void
 - isFirstInitialization(): boolean
 - getConfiguration(): Configuration
-- saveConfiguration(configuration: Partial<Configuration>): void 
+- saveConfiguration(configuration: Partial<Configuration>): void

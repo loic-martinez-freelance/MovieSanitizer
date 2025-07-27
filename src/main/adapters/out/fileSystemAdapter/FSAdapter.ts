@@ -7,6 +7,7 @@ import {
   renameSync,
 } from 'fs'
 import { FileSystemPort } from '@domain/ports/FileSystemPort'
+import { shell } from 'electron'
 import path from 'path'
 
 export class FSAdapter implements FileSystemPort {
@@ -47,6 +48,10 @@ export class FSAdapter implements FileSystemPort {
 
   moveFile(srcPath: string, destPath: string): void {
     renameSync(srcPath, destPath)
+  }
+
+  openFileInExplorer(filePath: string): void {
+    shell.showItemInFolder(filePath)
   }
 }
 

@@ -20,6 +20,7 @@ import { GetMovieImageUseCase } from '@domain/useCases/movies/GetMovieImageUseCa
 import { CleanLocalMovieWithSelectedMovieUseCase } from '@domain/useCases/movies/CleanLocalMovieWithSelectedMovieUseCase'
 import { HTTPAdapter } from '@adapters/out/httpAdapter/HTTPAdapter'
 import { SearchAndAddNewMoviesUseCase } from '@domain/useCases/movies/SearchAndAddNewMoviesUseCase'
+import { OpenMovieInExplorerUseCase } from '@domain/useCases/movies/OpenMovieInExplorerUseCase'
 
 function initializeApp() {
   const configurationAdapter = new ElectronConfigurationAdapter()
@@ -73,6 +74,10 @@ function initializeApp() {
     listNewMoviesUseCase,
     configurationAdapter
   )
+  const openMovieInExplorerUseCase = new OpenMovieInExplorerUseCase(
+    configurationAdapter,
+    fileSystemAdapter
+  )
 
   firstInitializationUseCase.execute()
 
@@ -86,6 +91,7 @@ function initializeApp() {
   comAdapter.startGetRelatedMoviesFromDB(listMoviesByTitleOnDBUseCase)
   comAdapter.startCleanLocalMovie(cleanLocalMovieWithSelectedMovieUseCase)
   comAdapter.startSearchNewMovies(searchAndAddNewMoviesUseCase)
+  comAdapter.startOpenMovieInExplorer(openMovieInExplorerUseCase)
 }
 
 function createWindow(): void {
