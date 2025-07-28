@@ -14,7 +14,7 @@ export const TopBar = ({ onRefresh }: TopBarProps) => {
     <div className="flex items-center justify-between px-6 py-3 bg-card border-b border-border">
       <div className="flex items-center gap-2">
         <Film className="w-5 h-5" />
-        <h1 className="text-lg font-semibold">Movie Manager</h1>
+        <h1 className="text-lg font-semibold">Movie Sanitizer</h1>
       </div>
       <div className="flex gap-2">
         <Button variant="ghost" size="sm" onClick={onRefresh}>

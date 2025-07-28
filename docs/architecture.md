@@ -1,8 +1,8 @@
-# Documentation Générale de l'Application MovieLib
+# Documentation Générale de l'Application MovieSanitizer
 
 ## Vue d'ensemble
 
-MovieLib est une application Electron permettant de gérer une bibliothèque de films locale, enrichie par des métadonnées récupérées depuis des bases de données externes (ex: TMDB, IMDB). L'architecture suit une séparation stricte entre le domaine métier (use cases, ports) et les adapters (accès système, communication, etc.), inspirée par les principes de l'architecture hexagonale (Ports & Adapters).
+MovieSanitizer est une application Electron permettant de gérer une bibliothèque de films locale, enrichie par des métadonnées récupérées depuis des bases de données externes (ex: TMDB, IMDB). L'architecture suit une séparation stricte entre le domaine métier (use cases, ports) et les adapters (accès système, communication, etc.), inspirée par les principes de l'architecture hexagonale (Ports & Adapters).
 
 ## Architecture Générale
 
