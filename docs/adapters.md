@@ -31,7 +31,11 @@ Interface définissant les méthodes qu'un adapter de communication doit implém
 - startSelectLibraryFolder(selectLibraryFolderUseCase)
 - startGetMovieMetadata(getMovieMetadataUseCase)
 - startGetMovieImage(getMovieImageUseCase)
+- startGetRelatedMoviesFromDB(listMoviesByTitleOnDBUseCase)
+- startCleanLocalMovie(cleanLocalMovieWithSelectedMovieUseCase)
+- startSearchNewMovies(searchAndAddNewMoviesUseCase)
 - startOpenMovieInExplorer(openMovieInExplorerUseCase)
+- startChangeLocale(changeLocaleUseCase)
 
 ---
 

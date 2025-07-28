@@ -29,6 +29,15 @@ export const useIPC = () => {
     []
   )
 
+  const changeLocale = useCallback(async (locale: string): Promise<void> => {
+    try {
+      window.electron.ipcRenderer.send('changeLocale', locale)
+    } catch (err) {
+      setError(err as Error)
+      throw err
+    }
+  }, [])
+
   const selectLibraryFolder = async () => {
     try {
       const folder = await window.electron.ipcRenderer.invoke(
@@ -144,6 +153,7 @@ export const useIPC = () => {
     error,
     getConfiguration,
     saveConfiguration,
+    changeLocale,
     selectLibraryFolder,
     getMovieMetadata,
     getMovieImage,

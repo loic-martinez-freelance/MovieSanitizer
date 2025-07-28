@@ -6,11 +6,13 @@
 export type Configuration = {
   libraryPath: string
   movies: Movie[]
+  locale: string
 }
 ```
 
 - **libraryPath** : Chemin absolu du dossier de la bibliothèque de films.
 - **movies** : Liste des films connus, chacun étant de type `Movie`.
+- **locale** : Code de langue de l'interface utilisateur (ex: 'en', 'fr').
 
 ---
 

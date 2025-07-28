@@ -13,6 +13,8 @@
     "movieFolder": "Main movie folder",
     "browse": "Browse",
     "movieFolderDescription": "Folder containing your movie collection",
+    "language": "Language",
+    "languageDescription": "Choose your preferred language",
     "cancel": "Cancel",
     "save": "Save"
   },

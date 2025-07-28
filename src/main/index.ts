@@ -16,6 +16,7 @@ import { FirstInitializationUseCase } from '@domain/useCases/settings/FirstIniti
 import { GetConfigurationUseCase } from '@domain/useCases/settings/GetConfigurationUseCase'
 import { SaveConfigurationUseCase } from '@domain/useCases/settings/SaveConfigurationUseCase'
 import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/SelectLibraryFolderUseCase'
+import { ChangeLocaleUseCase } from '@domain/useCases/settings/ChangeLocaleUseCase'
 import { GetMovieImageUseCase } from '@domain/useCases/movies/GetMovieImageUseCase'
 import { CleanLocalMovieWithSelectedMovieUseCase } from '@domain/useCases/movies/CleanLocalMovieWithSelectedMovieUseCase'
 import { HTTPAdapter } from '@adapters/out/httpAdapter/HTTPAdapter'
@@ -78,6 +79,7 @@ function initializeApp() {
     configurationAdapter,
     fileSystemAdapter
   )
+  const changeLocaleUseCase = new ChangeLocaleUseCase(configurationAdapter)
 
   firstInitializationUseCase.execute()
 
@@ -92,6 +94,7 @@ function initializeApp() {
   comAdapter.startCleanLocalMovie(cleanLocalMovieWithSelectedMovieUseCase)
   comAdapter.startSearchNewMovies(searchAndAddNewMoviesUseCase)
   comAdapter.startOpenMovieInExplorer(openMovieInExplorerUseCase)
+  comAdapter.startChangeLocale(changeLocaleUseCase)
 }
 
 function createWindow(): void {

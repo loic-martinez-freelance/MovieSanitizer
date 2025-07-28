@@ -1,4 +1,4 @@
-import { Settings, FolderOpen } from 'lucide-react'
+import { Settings, FolderOpen, Globe } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -11,6 +11,13 @@ import {
 } from '@/components/ui/dialog'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { useIPC } from '@/hooks/useIPC'
 import { useTranslation } from '@/hooks/useTranslation'
 import { useEffect, useState } from 'react'
@@ -22,16 +29,18 @@ interface SettingsDialogProps {
 }
 
 export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
-  const { t } = useTranslation()
+  const { t, changeLanguage } = useTranslation()
   const ipc = useIPC()
   const [configuration, setConfiguration] = useState<Configuration | null>(null)
   const [libraryPath, setLibraryPath] = useState('')
+  const [selectedLanguage, setSelectedLanguage] = useState('en')
 
   useEffect(() => {
     const loadConfiguration = async () => {
       const config = await ipc.getConfiguration()
       setConfiguration(config)
       setLibraryPath(config.libraryPath)
+      setSelectedLanguage(config.locale || 'en')
     }
     if (open) {
       loadConfiguration()
@@ -40,7 +49,12 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
 
   const handleSave = async () => {
     if (configuration) {
-      await ipc.saveConfiguration({ ...configuration, libraryPath })
+      await ipc.saveConfiguration({
+        ...configuration,
+        libraryPath,
+        locale: selectedLanguage,
+      })
+      await changeLanguage(selectedLanguage)
       onOpenChange(false)
     }
   }
@@ -97,6 +111,37 @@ export const SettingsDialog = ({ open, onOpenChange }: SettingsDialogProps) => {
                 </div>
                 <p className="text-sm text-muted-foreground">
                   {t('settings.movieFolderDescription')}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-card border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Globe className="w-4 h-4" />
+                {t('settings.language')}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="language-select">
+                  {t('settings.language')}
+                </Label>
+                <Select
+                  value={selectedLanguage}
+                  onValueChange={setSelectedLanguage}
+                >
+                  <SelectTrigger className="bg-background border-input">
+                    <SelectValue placeholder={t('settings.language')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="fr">Français</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-sm text-muted-foreground">
+                  {t('settings.languageDescription')}
                 </p>
               </div>
             </CardContent>

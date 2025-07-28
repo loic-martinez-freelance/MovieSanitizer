@@ -13,6 +13,8 @@
     "movieFolder": "Dossier principal des films",
     "browse": "Parcourir",
     "movieFolderDescription": "Dossier contenant votre collection de films",
+    "language": "Langue",
+    "languageDescription": "Choisissez votre langue préférée",
     "cancel": "Annuler",
     "save": "Enregistrer"
   },

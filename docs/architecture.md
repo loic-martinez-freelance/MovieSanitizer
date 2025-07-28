@@ -34,10 +34,11 @@ flowchart TD
     ListNewMovies["ListNewMoviesUseCase"]
     SearchAndAddNewMovies["SearchAndAddNewMoviesUseCase"]
     InitializeNewLibrary["InitializeNewLibraryUseCase"]
-    FirstInitialization["FirstInitializationUseCase"]
-    SaveConfiguration["SaveConfigurationUseCase"]
-    GetConfiguration["GetConfigurationUseCase"]
-    SelectLibraryFolder["SelectLibraryFolderUseCase"]
+      FirstInitialization["FirstInitializationUseCase"]
+  SaveConfiguration["SaveConfigurationUseCase"]
+  GetConfiguration["GetConfigurationUseCase"]
+  SelectLibraryFolder["SelectLibraryFolderUseCase"]
+  ChangeLocale["ChangeLocaleUseCase"]
   end
 
   subgraph Renderer
@@ -57,6 +58,7 @@ flowchart TD
   IPCRouterAdapter -- Appelle --> SaveConfiguration
   IPCRouterAdapter -- Appelle --> GetConfiguration
   IPCRouterAdapter -- Appelle --> SelectLibraryFolder
+  IPCRouterAdapter -- Appelle --> ChangeLocale
 
   CleanLocalMovie -- Utilise --> MovieDBAdapter
   CleanLocalMovie -- Utilise --> FileSystemAdapter
@@ -91,6 +93,7 @@ flowchart TD
   SaveConfiguration -- Utilise --> ConfigurationAdapter
   SaveConfiguration -- Utilise --> InitializeNewLibrary
   GetConfiguration -- Utilise --> ConfigurationAdapter
+  ChangeLocale -- Utilise --> ConfigurationAdapter
   SelectLibraryFolder -- Utilise --> UI
 ```
 

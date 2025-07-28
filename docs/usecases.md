@@ -163,6 +163,18 @@
 
 ---
 
+### ChangeLocaleUseCase
+
+- **Fichier** : src/main/domain/useCases/settings/ChangeLocaleUseCase.ts
+- **Rôle** : Change la langue de l'interface utilisateur et sauvegarde cette préférence.
+- **Dépendances** :
+  - ConfigurationPort
+- **Fonctionnement** :
+  1. Sauvegarde la nouvelle locale dans la configuration.
+  2. La configuration est persistée pour les prochains démarrages.
+
+---
+
 ### GetConfigurationUseCase
 
 - **Fichier** : src/main/domain/useCases/settings/GetConfigurationUseCase.ts

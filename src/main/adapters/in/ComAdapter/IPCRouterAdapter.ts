@@ -9,6 +9,7 @@ import { ListMoviesByTitleOnDBUseCase } from '@domain/useCases/movies/ListMovies
 import { CleanLocalMovieWithSelectedMovieUseCase } from '@domain/useCases/movies/CleanLocalMovieWithSelectedMovieUseCase'
 import { SearchAndAddNewMoviesUseCase } from '@domain/useCases/movies/SearchAndAddNewMoviesUseCase'
 import { OpenMovieInExplorerUseCase } from '@domain/useCases/movies/OpenMovieInExplorerUseCase'
+import { ChangeLocaleUseCase } from '@domain/useCases/settings/ChangeLocaleUseCase'
 
 export class IPCRouterAdapter implements ComAdapterPort {
   constructor() {}
@@ -94,5 +95,11 @@ export class IPCRouterAdapter implements ComAdapterPort {
         openMovieInExplorerUseCase.execute(movieRelativePath)
       }
     )
+  }
+
+  startChangeLocale(changeLocaleUseCase: ChangeLocaleUseCase) {
+    ipcMain.on('changeLocale', (_, locale: string) => {
+      changeLocaleUseCase.execute(locale)
+    })
   }
 }

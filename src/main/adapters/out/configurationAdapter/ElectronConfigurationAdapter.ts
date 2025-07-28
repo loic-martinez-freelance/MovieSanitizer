@@ -22,6 +22,7 @@ export class ElectronConfigurationAdapter implements ConfigurationPort {
         JSON.stringify({
           libraryPath: app.getPath('videos'),
           movies: [],
+          locale: 'en',
         })
       )
     }
