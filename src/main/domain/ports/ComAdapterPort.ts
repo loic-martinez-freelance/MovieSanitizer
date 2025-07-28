@@ -1,7 +1,7 @@
 import { GetMovieMetadataUseCase } from '@domain/useCases/movies/GetMovieMetadataUseCase'
-import { GetConfigurationUseCase } from '../useCases/settings/GetConfigurationUseCase'
-import { SaveConfigurationUseCase } from '../useCases/settings/SaveConfigurationUseCase'
-import { SelectLibraryFolderUseCase } from '../useCases/settings/SelectLibraryFolderUseCase'
+import { GetConfigurationUseCase } from '@domain/useCases/settings/GetConfigurationUseCase'
+import { SaveConfigurationUseCase } from '@domain/useCases/settings/SaveConfigurationUseCase'
+import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/SelectLibraryFolderUseCase'
 import { GetMovieImageUseCase } from '@domain/useCases/movies/GetMovieImageUseCase'
 import { OpenMovieInExplorerUseCase } from '@domain/useCases/movies/OpenMovieInExplorerUseCase'
 
