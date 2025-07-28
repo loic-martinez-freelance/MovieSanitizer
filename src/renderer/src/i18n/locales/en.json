@@ -1,0 +1,57 @@
+{
+  "app": {
+    "title": "Movie Sanitizer",
+    "loading": "Updating movies...",
+    "error": "Error"
+  },
+  "topBar": {
+    "refresh": "Refresh"
+  },
+  "settings": {
+    "title": "Settings",
+    "folders": "Folders",
+    "movieFolder": "Main movie folder",
+    "browse": "Browse",
+    "movieFolderDescription": "Folder containing your movie collection",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "movieList": {
+    "noMovies": "No movies found",
+    "selectMovie": "Select a movie to view details",
+    "searchPlaceholder": "Search for a movie...",
+    "clearSearch": "Clear search"
+  },
+  "movieDetails": {
+    "title": "Title",
+    "year": "Year",
+    "genre": "Genre",
+    "director": "Director",
+    "cast": "Cast",
+    "plot": "Plot",
+    "rating": "Rating",
+    "openInExplorer": "Open in Explorer",
+    "noMetadata": "No metadata available",
+    "actionsMenu": "Actions menu",
+    "duration": "Duration",
+    "file": "File",
+    "resolution": "Resolution",
+    "description": "Description"
+  },
+  "movieScraper": {
+    "title": "Search Metadata",
+    "description": "Search for information about \"{{title}}\" to update its metadata",
+    "searchPlaceholder": "Search for a movie...",
+    "searching": "Searching for movie information...",
+    "noResults": "No results found",
+    "selectMovie": "Select this movie",
+    "updating": "Updating...",
+    "updateMovie": "Update Movie"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "close": "Close"
+  }
+}

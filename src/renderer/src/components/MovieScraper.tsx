@@ -1,6 +1,7 @@
 import { Movie } from '@domain/ports/dtos/Movie'
 import { useState, useEffect } from 'react'
 import { useIPC } from '../hooks/useIPC'
+import { useTranslation } from '../hooks/useTranslation'
 import { Input } from './ui/input'
 import { Card, CardContent } from './ui/card'
 import { Search } from 'lucide-react'
@@ -18,6 +19,7 @@ type MovieScraperProps = {
 }
 
 const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
+  const { t } = useTranslation()
   const [searchQuery, setSearchQuery] = useState(movie.title)
   const [relatedMovies, setRelatedMovies] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
@@ -60,11 +62,10 @@ const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
     <div className="h-full flex flex-col p-6 space-y-6">
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold tracking-tight">
-          Rechercher des métadonnées
+          {t('movieScraper.title')}
         </h2>
         <p className="text-sm text-muted-foreground">
-          Recherchez des informations sur "{movie.title}" pour mettre à jour ses
-          métadonnées
+          {t('movieScraper.description', { title: movie.title })}
         </p>
       </div>
 
@@ -74,7 +75,7 @@ const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Rechercher un film..."
+          placeholder={t('movieScraper.searchPlaceholder')}
           className="pl-9 h-10"
         />
       </div>
@@ -82,12 +83,12 @@ const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
       {loading && (
         <div className="flex items-center justify-center py-8 text-muted-foreground">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mr-2"></div>
-          Chargement...
+          {t('common.loading')}
         </div>
       )}
       {error && (
         <div className="bg-destructive/15 text-destructive px-4 py-3 rounded-md">
-          <p className="font-medium">Erreur</p>
+          <p className="font-medium">{t('common.error')}</p>
           <p className="text-sm">{error.message}</p>
         </div>
       )}
@@ -115,7 +116,9 @@ const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
                     onClick={() => handleSelectMovie(relatedMovie.id)}
                     disabled={loading}
                   >
-                    {loading ? 'Mise à jour...' : 'Choisir ce film'}
+                    {loading
+                      ? t('movieScraper.updating')
+                      : t('movieScraper.selectMovie')}
                   </Button>
                 </div>
               </CardContent>

@@ -3,10 +3,12 @@ import { TopBar } from '@/components/TopBar'
 import { MovieList } from '@/components/MovieList'
 import { MovieDetails } from '@/components/MovieDetails'
 import { useIPC } from '@/hooks/useIPC'
+import { useTranslation } from '@/hooks/useTranslation'
 import { MovieWithMetadata, type Movie } from '@domain/ports/dtos/Movie'
 import MovieScraper from './components/MovieScraper'
 
 const App = () => {
+  const { t } = useTranslation()
   const {
     getConfiguration,
     getMovieMetadata,
@@ -83,7 +85,7 @@ const App = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center h-screen text-red-500">
-        Error: {error.message}
+        {t('app.error')}: {error.message}
       </div>
     )
   }
@@ -91,7 +93,7 @@ const App = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-background text-foreground dark">
-        <div className="text-xl animate-pulse">Actualisation des films...</div>
+        <div className="text-xl animate-pulse">{t('app.loading')}</div>
       </div>
     )
   }

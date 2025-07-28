@@ -3,6 +3,7 @@ import { Search, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { useTranslation } from '@/hooks/useTranslation'
 import type { Movie } from '@domain/ports/dtos/Movie'
 
 interface MovieListProps {
@@ -16,6 +17,7 @@ export const MovieList = ({
   selectedMovie,
   onMovieSelect,
 }: MovieListProps) => {
+  const { t } = useTranslation()
   const [searchQuery, setSearchQuery] = useState('')
   const filteredMovies = movies.filter((movie) =>
     movie.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -27,7 +29,7 @@ export const MovieList = ({
         <div className="relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Rechercher un film..."
+            placeholder={t('movieList.searchPlaceholder')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-8 pr-8"
@@ -39,7 +41,7 @@ export const MovieList = ({
               variant="ghost"
               className="absolute right-2 inset-y-0 my-auto h-6 w-6 p-0 flex items-center justify-center"
               onClick={() => setSearchQuery('')}
-              aria-label="Effacer la recherche"
+              aria-label={t('movieList.clearSearch')}
             >
               <X className="h-4 w-4 text-muted-foreground" />
             </Button>

@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useTranslation } from '@/hooks/useTranslation'
 import { MovieWithMetadata } from '@domain/ports/dtos/Movie'
 
 const formatRuntime = (minutes: number): string => {
@@ -26,6 +27,7 @@ export const MovieDetails = ({
   movie,
   onOpenInExplorer,
 }: MovieDetailsProps) => {
+  const { t } = useTranslation()
   const metadata = movie.metadata
 
   if (!metadata) {
@@ -45,7 +47,7 @@ export const MovieDetails = ({
                   size="icon"
                   variant="ghost"
                   className="h-8 w-8"
-                  aria-label="Menu d'actions"
+                  aria-label={t('movieDetails.actionsMenu')}
                 >
                   <MoreHorizontal className="h-4 w-4" />
                 </Button>
@@ -53,7 +55,7 @@ export const MovieDetails = ({
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => onOpenInExplorer(movie)}>
                   <FolderOpen className="h-4 w-4 mr-2" />
-                  Ouvrir dans l'explorateur
+                  {t('movieDetails.openInExplorer')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -68,15 +70,21 @@ export const MovieDetails = ({
           <div className="flex-1">
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
-                <div className="text-sm text-muted-foreground">Année</div>
+                <div className="text-sm text-muted-foreground">
+                  {t('movieDetails.year')}
+                </div>
                 <div>{metadata.year}</div>
               </div>
               <div>
-                <div className="text-sm text-muted-foreground">Genre</div>
+                <div className="text-sm text-muted-foreground">
+                  {t('movieDetails.genre')}
+                </div>
                 <div>{metadata.genres.join(', ')}</div>
               </div>
               <div>
-                <div className="text-sm text-muted-foreground">Durée</div>
+                <div className="text-sm text-muted-foreground">
+                  {t('movieDetails.duration')}
+                </div>
                 <div>
                   {metadata.runtime
                     ? formatRuntime(parseInt(metadata.runtime, 10))
@@ -84,7 +92,9 @@ export const MovieDetails = ({
                 </div>
               </div>
               <div>
-                <div className="text-sm text-muted-foreground">Fichier</div>
+                <div className="text-sm text-muted-foreground">
+                  {t('movieDetails.file')}
+                </div>
                 <div className="truncate">
                   {movie.relativePath.split('/').pop()}
                 </div>
@@ -92,7 +102,7 @@ export const MovieDetails = ({
               {metadata.fileInfo?.streamDetails?.video && (
                 <div>
                   <div className="text-sm text-muted-foreground">
-                    Résolution
+                    {t('movieDetails.resolution')}
                   </div>
                   <div>
                     {metadata.fileInfo.streamDetails.video.width}x
@@ -104,7 +114,7 @@ export const MovieDetails = ({
             {metadata.plot && (
               <div>
                 <div className="text-sm text-muted-foreground mb-2">
-                  Description
+                  {t('movieDetails.description')}
                 </div>
                 <div className="text-sm leading-relaxed">{metadata.plot}</div>
               </div>

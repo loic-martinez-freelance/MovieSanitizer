@@ -1,0 +1,57 @@
+{
+  "app": {
+    "title": "Movie Sanitizer",
+    "loading": "Actualisation des films...",
+    "error": "Erreur"
+  },
+  "topBar": {
+    "refresh": "Actualiser"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "folders": "Dossiers",
+    "movieFolder": "Dossier principal des films",
+    "browse": "Parcourir",
+    "movieFolderDescription": "Dossier contenant votre collection de films",
+    "cancel": "Annuler",
+    "save": "Enregistrer"
+  },
+  "movieList": {
+    "noMovies": "Aucun film trouvé",
+    "selectMovie": "Sélectionnez un film pour voir les détails",
+    "searchPlaceholder": "Rechercher un film...",
+    "clearSearch": "Effacer la recherche"
+  },
+  "movieDetails": {
+    "title": "Titre",
+    "year": "Année",
+    "genre": "Genre",
+    "director": "Réalisateur",
+    "cast": "Casting",
+    "plot": "Synopsis",
+    "rating": "Note",
+    "openInExplorer": "Ouvrir dans l'explorateur",
+    "noMetadata": "Aucune métadonnée disponible",
+    "actionsMenu": "Menu d'actions",
+    "duration": "Durée",
+    "file": "Fichier",
+    "resolution": "Résolution",
+    "description": "Description"
+  },
+  "movieScraper": {
+    "title": "Rechercher des métadonnées",
+    "description": "Recherchez des informations sur \"{{title}}\" pour mettre à jour ses métadonnées",
+    "searchPlaceholder": "Rechercher un film...",
+    "searching": "Recherche d'informations sur le film...",
+    "noResults": "Aucun résultat trouvé",
+    "selectMovie": "Choisir ce film",
+    "updating": "Mise à jour...",
+    "updateMovie": "Mettre à jour le film"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "success": "Succès",
+    "close": "Fermer"
+  }
+}

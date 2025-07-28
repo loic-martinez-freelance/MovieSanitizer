@@ -28,7 +28,10 @@
     "@radix-ui/react-separator": "^1.1.7",
     "dotenv": "^16.5.0",
     "electron-updater": "^6.3.9",
-    "fast-xml-parser": "^5.2.3"
+    "fast-xml-parser": "^5.2.3",
+    "i18next": "^25.3.2",
+    "i18next-browser-languagedetector": "^8.2.0",
+    "react-i18next": "^15.6.1"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
