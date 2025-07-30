@@ -94,16 +94,30 @@
 
 ---
 
-### GetMovieImageUseCase
+### GetLocalMoviePosterUseCase
 
-- **Fichier** : src/main/domain/useCases/movies/GetMovieImageUseCase.ts
-- **Rôle** : Récupère l'image (affiche) associée à un film local.
+- **Fichier** : src/main/domain/useCases/movies/GetLocalMoviePosterUseCase.ts
+- **Rôle** : Récupère l'affiche (poster) associée à un film local stocké sur le système de fichiers.
 - **Dépendances** :
   - ConfigurationPort
   - FileSystemPort
 - **Fonctionnement** :
-  1. Cherche les fichiers d'affiche (jpg, png, etc.) associés au film dans le dossier de la bibliothèque.
+  1. Cherche les fichiers d'affiche (jpg, png, webp, etc.) associés au film dans le dossier de la bibliothèque.
   2. Retourne le contenu du fichier image si trouvé.
+
+---
+
+### DownloadMoviePosterFromTMDBUseCase
+
+- **Fichier** : src/main/domain/useCases/movies/DownloadMoviePosterFromTMDBUseCase.ts
+- **Rôle** : Télécharge l'affiche (poster) d'un film depuis TMDB (The Movie Database).
+- **Dépendances** :
+  - MovieDBAdapterPort
+  - HttpPort
+- **Fonctionnement** :
+  1. Récupère l'URL du poster depuis TMDB via l'adaptateur MovieDB.
+  2. Télécharge le fichier image depuis cette URL via l'adaptateur HTTP.
+  3. Retourne le buffer contenant l'image téléchargée.
 
 ---
 

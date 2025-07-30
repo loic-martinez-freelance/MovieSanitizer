@@ -2,7 +2,7 @@ import { ConfigurationPort } from '@domain/ports/ConfigurationPort'
 import { FileSystemPort } from '@domain/ports/FileSystemPort'
 import path from 'path'
 
-export class GetMovieImageUseCase {
+export class GetLocalMoviePosterUseCase {
   constructor(
     private readonly configurationAdapter: ConfigurationPort,
     private readonly fileSystemAdapter: FileSystemPort

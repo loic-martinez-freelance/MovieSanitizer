@@ -29,7 +29,8 @@ flowchart TD
     CleanLocalMovie["CleanLocalMovieWithSelectedMovieUseCase"]
     GetMovie["GetMovieUseCase"]
     GetMovieMetadata["GetMovieMetadataUseCase"]
-    GetMovieImage["GetMovieImageUseCase"]
+    GetLocalMoviePoster["GetLocalMoviePosterUseCase"]
+    DownloadMoviePosterFromTMDB["DownloadMoviePosterFromTMDBUseCase"]
     ListMoviesByTitleOnDB["ListMoviesByTitleOnDBUseCase"]
     ListNewMovies["ListNewMoviesUseCase"]
     SearchAndAddNewMovies["SearchAndAddNewMoviesUseCase"]
@@ -49,7 +50,8 @@ flowchart TD
   IPCRouterAdapter -- Appelle --> CleanLocalMovie
   IPCRouterAdapter -- Appelle --> GetMovie
   IPCRouterAdapter -- Appelle --> GetMovieMetadata
-  IPCRouterAdapter -- Appelle --> GetMovieImage
+  IPCRouterAdapter -- Appelle --> GetLocalMoviePoster
+  IPCRouterAdapter -- Appelle --> DownloadMoviePosterFromTMDB
   IPCRouterAdapter -- Appelle --> ListMoviesByTitleOnDB
   IPCRouterAdapter -- Appelle --> ListNewMovies
   IPCRouterAdapter -- Appelle --> SearchAndAddNewMovies
@@ -73,8 +75,10 @@ flowchart TD
   GetMovieMetadata -- Utilise --> MetadataAdapter
   GetMovieMetadata -- Utilise --> ConfigurationAdapter
 
-  GetMovieImage -- Utilise --> FileSystemAdapter
-  GetMovieImage -- Utilise --> ConfigurationAdapter
+  GetLocalMoviePoster -- Utilise --> FileSystemAdapter
+  GetLocalMoviePoster -- Utilise --> ConfigurationAdapter
+  DownloadMoviePosterFromTMDB -- Utilise --> MovieDBAdapter
+  DownloadMoviePosterFromTMDB -- Utilise --> HttpAdapter
 
   ListMoviesByTitleOnDB -- Utilise --> MovieDBAdapter
 

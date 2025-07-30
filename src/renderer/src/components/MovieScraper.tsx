@@ -11,6 +11,7 @@ type SearchResult = {
   id: string
   title: string
   year: string
+  posterBuffer?: string
 }
 
 type MovieScraperProps = {
@@ -23,7 +24,12 @@ const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
   const [searchQuery, setSearchQuery] = useState(movie.title)
   const [relatedMovies, setRelatedMovies] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
-  const { error, getRelatedMoviesFromDB, cleanLocalMovie } = useIPC()
+  const {
+    error,
+    getRelatedMoviesFromDB,
+    getMoviePosterBuffer,
+    cleanLocalMovie,
+  } = useIPC()
 
   const handleSelectMovie = async (selectedMovieId: string) => {
     setLoading(true)
@@ -44,7 +50,22 @@ const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
       if (searchQuery.trim()) {
         try {
           const movies = await getRelatedMoviesFromDB(searchQuery)
-          setRelatedMovies(movies as SearchResult[])
+          // Récupérer les buffers des posters pour chaque film
+          const moviesWithPosters = await Promise.all(
+            movies.map(async (movie) => {
+              try {
+                const posterBuffer = await getMoviePosterBuffer(movie.id)
+                return { ...movie, posterBuffer }
+              } catch (err) {
+                console.error(
+                  `Error getting poster for movie ${movie.id}:`,
+                  err
+                )
+                return { ...movie, posterBuffer: undefined }
+              }
+            })
+          )
+          setRelatedMovies(moviesWithPosters as SearchResult[])
         } catch (err) {
           console.error('Error searching movies:', err)
           setRelatedMovies([])
@@ -56,7 +77,7 @@ const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
 
     const debounceTimer = setTimeout(searchMovies, 300)
     return () => clearTimeout(debounceTimer)
-  }, [searchQuery, getRelatedMoviesFromDB])
+  }, [searchQuery, getRelatedMoviesFromDB, getMoviePosterBuffer])
 
   return (
     <div className="h-full flex flex-col p-6 space-y-6">
@@ -102,15 +123,28 @@ const MovieScraper = ({ movie, onMovieUpdated }: MovieScraperProps) => {
             >
               <CardContent className="p-4">
                 <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <h3 className="font-semibold text-lg">
-                      {relatedMovie.title}
-                    </h3>
-                    {relatedMovie.year && (
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {relatedMovie.year}
-                      </p>
+                  <div className="flex items-center gap-4 flex-1">
+                    {relatedMovie.posterBuffer && (
+                      <img
+                        src={relatedMovie.posterBuffer}
+                        alt={`Poster de ${relatedMovie.title}`}
+                        className="w-16 h-24 object-cover rounded-md shadow-sm"
+                        onError={(e) => {
+                          // Cacher l'image si elle ne charge pas
+                          e.currentTarget.style.display = 'none'
+                        }}
+                      />
                     )}
+                    <div>
+                      <h3 className="font-semibold text-lg">
+                        {relatedMovie.title}
+                      </h3>
+                      {relatedMovie.year && (
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {relatedMovie.year}
+                        </p>
+                      )}
+                    </div>
                   </div>
                   <Button
                     onClick={() => handleSelectMovie(relatedMovie.id)}

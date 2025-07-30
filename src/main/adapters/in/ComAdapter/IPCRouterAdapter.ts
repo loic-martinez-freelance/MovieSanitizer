@@ -4,7 +4,8 @@ import { SaveConfigurationUseCase } from '@domain/useCases/settings/SaveConfigur
 import { GetConfigurationUseCase } from '@domain/useCases/settings/GetConfigurationUseCase'
 import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/SelectLibraryFolderUseCase'
 import { GetMovieMetadataUseCase } from '@domain/useCases/movies/GetMovieMetadataUseCase'
-import { GetMovieImageUseCase } from '@domain/useCases/movies/GetMovieImageUseCase'
+import { GetLocalMoviePosterUseCase } from '@domain/useCases/movies/GetLocalMoviePosterUseCase'
+import { DownloadMoviePosterFromTMDBUseCase } from '@domain/useCases/movies/DownloadMoviePosterFromTMDBUseCase'
 import { ListMoviesByTitleOnDBUseCase } from '@domain/useCases/movies/ListMoviesByTitleOnDBUseCase'
 import { CleanLocalMovieWithSelectedMovieUseCase } from '@domain/useCases/movies/CleanLocalMovieWithSelectedMovieUseCase'
 import { SearchAndAddNewMoviesUseCase } from '@domain/useCases/movies/SearchAndAddNewMoviesUseCase'
@@ -49,10 +50,20 @@ export class IPCRouterAdapter implements ComAdapterPort {
     })
   }
 
-  startGetMovieImage(getMovieImageUseCase: GetMovieImageUseCase) {
+  startGetMovieImage(getLocalMoviePosterUseCase: GetLocalMoviePosterUseCase) {
     ipcMain.handle('getMovieImage', async (_, movieRelativePath: string) => {
-      const image = getMovieImageUseCase.execute(movieRelativePath)
+      const image = getLocalMoviePosterUseCase.execute(movieRelativePath)
       return image
+    })
+  }
+
+  startGetMoviePosterBuffer(
+    downloadMoviePosterFromTMDBUseCase: DownloadMoviePosterFromTMDBUseCase
+  ) {
+    ipcMain.handle('getMoviePosterBuffer', async (_, movieId: string) => {
+      const posterBuffer =
+        await downloadMoviePosterFromTMDBUseCase.execute(movieId)
+      return posterBuffer
     })
   }
 

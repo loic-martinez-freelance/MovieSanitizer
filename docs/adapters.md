@@ -11,7 +11,8 @@ Cet adapter implémente l'interface `ComAdapterPort` et fait le lien entre le ba
 - **startGetConfiguration(getConfigurationUseCase)** : Gère 'getConfiguration' et retourne la configuration courante.
 - **startSelectLibraryFolder(selectLibraryFolderUseCase)** : Gère 'selectLibraryFolder' et retourne le dossier sélectionné.
 - **startGetMovieMetadata(getMovieMetadataUseCase)** : Gère 'getMovieMetadata' et retourne les métadonnées du film.
-- **startGetMovieImage(getMovieImageUseCase)** : Gère 'getMovieImage' et retourne l'image du film.
+- **startGetMovieImage(getLocalMoviePosterUseCase)** : Gère 'getMovieImage' et retourne l'affiche locale du film.
+- **startGetMoviePosterBuffer(downloadMoviePosterFromTMDBUseCase)** : Gère 'getMoviePosterBuffer' et télécharge l'affiche depuis TMDB.
 - **startGetRelatedMoviesFromDB(listMoviesByTitleOnDBUseCase)** : Gère 'getRelatedMoviesFromDB' et retourne les films correspondants à un titre.
 - **startCleanLocalMovie(cleanLocalMovieWithSelectedMovieUseCase)** : Gère 'cleanLocalMovie' pour nettoyer et organiser un film local avec les métadonnées sélectionnées.
 - **startSearchNewMovies(searchNewMovies)** : Écoute 'searchNewMovies' et lance la recherche/ajout de nouveaux films.
@@ -30,7 +31,8 @@ Interface définissant les méthodes qu'un adapter de communication doit implém
 - startGetConfiguration(getConfigurationUseCase)
 - startSelectLibraryFolder(selectLibraryFolderUseCase)
 - startGetMovieMetadata(getMovieMetadataUseCase)
-- startGetMovieImage(getMovieImageUseCase)
+- startGetMovieImage(getLocalMoviePosterUseCase)
+- startGetMoviePosterBuffer(downloadMoviePosterFromTMDBUseCase)
 - startGetRelatedMoviesFromDB(listMoviesByTitleOnDBUseCase)
 - startCleanLocalMovie(cleanLocalMovieWithSelectedMovieUseCase)
 - startSearchNewMovies(searchAndAddNewMoviesUseCase)

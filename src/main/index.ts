@@ -17,7 +17,8 @@ import { GetConfigurationUseCase } from '@domain/useCases/settings/GetConfigurat
 import { SaveConfigurationUseCase } from '@domain/useCases/settings/SaveConfigurationUseCase'
 import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/SelectLibraryFolderUseCase'
 import { ChangeLocaleUseCase } from '@domain/useCases/settings/ChangeLocaleUseCase'
-import { GetMovieImageUseCase } from '@domain/useCases/movies/GetMovieImageUseCase'
+import { GetLocalMoviePosterUseCase } from '@domain/useCases/movies/GetLocalMoviePosterUseCase'
+import { DownloadMoviePosterFromTMDBUseCase } from '@domain/useCases/movies/DownloadMoviePosterFromTMDBUseCase'
 import { CleanLocalMovieWithSelectedMovieUseCase } from '@domain/useCases/movies/CleanLocalMovieWithSelectedMovieUseCase'
 import { HTTPAdapter } from '@adapters/out/httpAdapter/HTTPAdapter'
 import { SearchAndAddNewMoviesUseCase } from '@domain/useCases/movies/SearchAndAddNewMoviesUseCase'
@@ -38,10 +39,12 @@ function initializeApp() {
     fileSystemAdapter,
     metadataAdapter
   )
-  const getMovieImageUseCase = new GetMovieImageUseCase(
+  const getLocalMoviePosterUseCase = new GetLocalMoviePosterUseCase(
     configurationAdapter,
     fileSystemAdapter
   )
+  const downloadMoviePosterFromTMDBUseCase =
+    new DownloadMoviePosterFromTMDBUseCase(movieDBAdapter, httpAdapter)
   const selectLibraryFolderUseCase = new SelectLibraryFolderUseCase()
   const listNewMoviesUseCase = new ListNewMoviesUseCase(
     fileSystemAdapter,
@@ -89,7 +92,8 @@ function initializeApp() {
   comAdapter.startGetConfiguration(getConfigurationUseCase)
   comAdapter.startSelectLibraryFolder(selectLibraryFolderUseCase)
   comAdapter.startGetMovieMetadata(getMovieMetadataUseCase)
-  comAdapter.startGetMovieImage(getMovieImageUseCase)
+  comAdapter.startGetMovieImage(getLocalMoviePosterUseCase)
+  comAdapter.startGetMoviePosterBuffer(downloadMoviePosterFromTMDBUseCase)
   comAdapter.startGetRelatedMoviesFromDB(listMoviesByTitleOnDBUseCase)
   comAdapter.startCleanLocalMovie(cleanLocalMovieWithSelectedMovieUseCase)
   comAdapter.startSearchNewMovies(searchAndAddNewMoviesUseCase)

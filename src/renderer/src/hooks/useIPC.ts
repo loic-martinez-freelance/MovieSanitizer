@@ -88,6 +88,26 @@ export const useIPC = () => {
     []
   )
 
+  const getMoviePosterBuffer = useCallback(
+    async (movieId: string): Promise<string | undefined> => {
+      try {
+        const posterBuffer = await window.electron.ipcRenderer.invoke(
+          'getMoviePosterBuffer',
+          movieId
+        )
+        if (posterBuffer) {
+          const blob = new Blob([posterBuffer], { type: 'image/jpeg' })
+          return URL.createObjectURL(blob)
+        }
+        return undefined
+      } catch (err) {
+        setError(err as Error)
+        throw err
+      }
+    },
+    []
+  )
+
   const getRelatedMoviesFromDB = useCallback(
     async (
       title: string
@@ -157,6 +177,7 @@ export const useIPC = () => {
     selectLibraryFolder,
     getMovieMetadata,
     getMovieImage,
+    getMoviePosterBuffer,
     getRelatedMoviesFromDB,
     cleanLocalMovie,
     searchAndAddNewMovies,

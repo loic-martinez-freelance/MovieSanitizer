@@ -2,7 +2,8 @@ import { GetMovieMetadataUseCase } from '@domain/useCases/movies/GetMovieMetadat
 import { GetConfigurationUseCase } from '@domain/useCases/settings/GetConfigurationUseCase'
 import { SaveConfigurationUseCase } from '@domain/useCases/settings/SaveConfigurationUseCase'
 import { SelectLibraryFolderUseCase } from '@domain/useCases/settings/SelectLibraryFolderUseCase'
-import { GetMovieImageUseCase } from '@domain/useCases/movies/GetMovieImageUseCase'
+import { GetLocalMoviePosterUseCase } from '@domain/useCases/movies/GetLocalMoviePosterUseCase'
+import { DownloadMoviePosterFromTMDBUseCase } from '@domain/useCases/movies/DownloadMoviePosterFromTMDBUseCase'
 import { OpenMovieInExplorerUseCase } from '@domain/useCases/movies/OpenMovieInExplorerUseCase'
 import { ListMoviesByTitleOnDBUseCase } from '@domain/useCases/movies/ListMoviesByTitleOnDBUseCase'
 import { CleanLocalMovieWithSelectedMovieUseCase } from '@domain/useCases/movies/CleanLocalMovieWithSelectedMovieUseCase'
@@ -19,7 +20,9 @@ export interface ComAdapterPort {
     selectLibraryFolderUseCase: SelectLibraryFolderUseCase
   ): void
   startGetMovieMetadata(getMovieMetadataUseCase: GetMovieMetadataUseCase): void
-  startGetMovieImage(getMovieImageUseCase: GetMovieImageUseCase): void
+  startGetMovieImage(
+    getLocalMoviePosterUseCase: GetLocalMoviePosterUseCase
+  ): void
   startGetRelatedMoviesFromDB(
     listMoviesByTitleOnDBUseCase: ListMoviesByTitleOnDBUseCase
   ): void
@@ -27,6 +30,9 @@ export interface ComAdapterPort {
     cleanLocalMovieWithSelectedMovieUseCase: CleanLocalMovieWithSelectedMovieUseCase
   ): void
   startSearchNewMovies(searchNewMovies: SearchAndAddNewMoviesUseCase): void
+  startGetMoviePosterBuffer(
+    downloadMoviePosterFromTMDBUseCase: DownloadMoviePosterFromTMDBUseCase
+  ): void
   startOpenMovieInExplorer(
     openMovieInExplorerUseCase: OpenMovieInExplorerUseCase
   ): void
